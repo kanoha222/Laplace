@@ -5,6 +5,9 @@ vendor/
 # Reference source (read-only, do not commit)
 chaldea-center/
 
+# Python virtual environment
+.venv/
+
 # Build output
 dist/
 build/

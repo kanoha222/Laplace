@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Laplace — FGO 智能助手 Demo：精确 30% NP 自充从者筛选器">
+  <title>Laplace — 30% NP 自充从者</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header id="app-header">
+    <div class="header-content">
+      <div class="logo-group">
+        <div class="logo-icon">⧫</div>
+        <div class="logo-text">
+          <h1>LAPLACE</h1>
+          <span class="tagline">FGO Intelligent Assistant</span>
+        </div>
+      </div>
+      <div class="query-display">
+        <span class="query-label">QUERY</span>
+        <span class="query-text">"帮我找一下 30 自充的从者有哪些"</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls Bar -->
+  <section id="controls">
+    <div class="controls-inner">
+      <div class="result-count">
+        <span class="count-number" id="count-display">—</span>
+        <span class="count-label">位从者</span>
+      </div>
+      <div class="filter-group">
+        <div class="filter-item">
+          <label for="filter-class">职阶</label>
+          <select id="filter-class">
+            <option value="all">全部</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label for="filter-rarity">稀有度</label>
+          <select id="filter-rarity">
+            <option value="all">全部</option>
+            <option value="5">★★★★★</option>
+            <option value="4">★★★★</option>
+            <option value="3">★★★</option>
+            <option value="2">★★</option>
+            <option value="1">★</option>
+            <option value="0">☆</option>
+          </select>
+        </div>
+        <div class="filter-item search-box">
+          <label for="filter-search">搜索</label>
+          <input type="text" id="filter-search" placeholder="从者名称...">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards Grid -->
+  <main id="cards-container">
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <p>正在加载从者数据...</p>
+    </div>
+    <div class="cards-grid" id="cards-grid"></div>
+    <div class="no-results" id="no-results" style="display:none;">
+      <p>没有找到匹配的从者</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer id="app-footer">
+    <p>数据及部分逻辑源自开源项目 <a href="https://github.com/chaldea-center/chaldea" target="_blank" rel="noopener">Chaldea</a> · 
+       数据来源 <a href="https://atlasacademy.io/" target="_blank" rel="noopener">Atlas Academy</a></p>
+    <p class="license">CC-BY-NC-SA-4.0</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
