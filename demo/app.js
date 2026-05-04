@@ -1,156 +1,215 @@
 /**
- * Laplace Demo — App Logic
+ * Laplace — Chat App Logic v2
  *
- * 加载预处理的从者 JSON 数据，
- * 实现客户端筛选/搜索并渲染从者卡片。
+ * 对话式交互：发送消息 → 调用后端 API → 渲染 AI 响应 + 从者卡片
  */
 
-const DATA_URL = "data/servants_np_charge.json";
-
-// === State ===
-let allServants = [];
-let filteredServants = [];
-let classOptions = new Set();
-
-// === DOM References ===
-const countDisplay = document.getElementById("count-display");
-const cardsGrid = document.getElementById("cards-grid");
-const loading = document.getElementById("loading");
-const noResults = document.getElementById("no-results");
-const filterClass = document.getElementById("filter-class");
-const filterRarity = document.getElementById("filter-rarity");
-const filterSearch = document.getElementById("filter-search");
+const API_URL = "http://localhost:8000/api/chat";
 
 // === Class Display Names ===
 const CLASS_NAMES = {
-  saber: "Saber",
-  archer: "Archer",
-  lancer: "Lancer",
-  rider: "Rider",
-  caster: "Caster",
-  assassin: "Assassin",
-  berserker: "Berserker",
-  ruler: "Ruler",
-  avenger: "Avenger",
-  moonCancer: "Moon Cancer",
-  alterEgo: "Alter Ego",
-  foreigner: "Foreigner",
-  pretender: "Pretender",
-  shielder: "Shielder",
-  beast: "Beast",
+  saber: "Saber", archer: "Archer", lancer: "Lancer",
+  rider: "Rider", caster: "Caster", assassin: "Assassin",
+  berserker: "Berserker", ruler: "Ruler", avenger: "Avenger",
+  moonCancer: "Moon Cancer", alterEgo: "Alter Ego",
+  foreigner: "Foreigner", pretender: "Pretender",
+  shielder: "Shielder", beast: "Beast",
 };
 
-// === Initialize ===
-async function init() {
+// === DOM ===
+const chatMessages = document.getElementById("chat-messages");
+const chatInput = document.getElementById("chat-input");
+const sendBtn = document.getElementById("send-btn");
+const modelName = document.getElementById("model-name");
+const chatContainer = document.getElementById("chat-container");
+
+// === State ===
+let isProcessing = false;
+
+// === Send Message ===
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text || isProcessing) return;
+
+  isProcessing = true;
+  sendBtn.disabled = true;
+  chatInput.value = "";
+
+  // Render user message
+  appendMessage("user", text);
+
+  // Show typing indicator
+  const typingEl = appendTypingIndicator();
+
   try {
-    const resp = await fetch(DATA_URL);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const resp = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
+    });
+
+    if (!resp.ok) throw new Error(`服务器错误 (${resp.status})`);
 
     const data = await resp.json();
-    allServants = data.servants || [];
 
-    // Collect unique classes
-    allServants.forEach((s) => classOptions.add(s.className));
-    populateClassFilter();
+    // Remove typing indicator
+    typingEl.remove();
 
-    // Initial render
-    applyFilters();
+    // Update model badge
+    if (data.model && data.model !== "error") {
+      modelName.textContent = data.model;
+    }
 
-    loading.style.display = "none";
+    // Render assistant response
+    appendAssistantResponse(data);
+
   } catch (err) {
-    console.error("Failed to load data:", err);
-    loading.innerHTML = `<p style="color:#ff6b6b;">数据加载失败: ${err.message}</p>`;
+    typingEl.remove();
+    appendMessage("assistant", `⚠️ 请求失败: ${err.message}\n\n请确保后端服务已启动 (uvicorn server.main:app)`, true);
+  } finally {
+    isProcessing = false;
+    sendBtn.disabled = false;
+    chatInput.focus();
   }
 }
 
-// === Populate Class Filter ===
-function populateClassFilter() {
-  const sorted = [...classOptions].sort((a, b) => {
-    const order = Object.keys(CLASS_NAMES);
-    return order.indexOf(a) - order.indexOf(b);
-  });
+// === Append User/Assistant Message ===
+function appendMessage(role, text, isError = false) {
+  const msg = document.createElement("div");
+  msg.className = `message ${role}-message`;
 
-  sorted.forEach((cls) => {
-    const opt = document.createElement("option");
-    opt.value = cls;
-    opt.textContent = CLASS_NAMES[cls] || cls;
-    filterClass.appendChild(opt);
-  });
-}
+  const avatar = role === "user" ? "👤" : "⧫";
 
-// === Filter Logic ===
-function applyFilters() {
-  const classVal = filterClass.value;
-  const rarityVal = filterRarity.value;
-  const searchVal = filterSearch.value.toLowerCase().trim();
-
-  filteredServants = allServants.filter((s) => {
-    if (classVal !== "all" && s.className !== classVal) return false;
-    if (rarityVal !== "all" && s.rarity !== parseInt(rarityVal)) return false;
-    if (searchVal && !s.name.toLowerCase().includes(searchVal)) return false;
-    return true;
-  });
-
-  countDisplay.textContent = filteredServants.length;
-  renderCards();
-}
-
-// === Render Cards ===
-function renderCards() {
-  cardsGrid.innerHTML = "";
-
-  if (filteredServants.length === 0) {
-    noResults.style.display = "block";
-    return;
-  }
-  noResults.style.display = "none";
-
-  filteredServants.forEach((servant, index) => {
-    const card = createCard(servant, index);
-    cardsGrid.appendChild(card);
-  });
-}
-
-function createCard(servant, index) {
-  const card = document.createElement("div");
-  card.className = `servant-card rarity-${servant.rarity}`;
-  card.style.animationDelay = `${Math.min(index * 30, 600)}ms`;
-
-  const stars = getStars(servant.rarity);
-  const className = CLASS_NAMES[servant.className] || servant.className;
-
-  card.innerHTML = `
-    <div class="card-top">
-      <div class="card-face">
-        <img src="${servant.faceUrl}" alt="${servant.name}" loading="lazy" 
-             onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 56 56%22><rect fill=%22%23191c3a%22 width=%2256%22 height=%2256%22/><text x=%2228%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%235c5a6e%22 font-size=%2214%22>?</text></svg>'">
-        <div class="card-face-border"></div>
+  msg.innerHTML = `
+    <div class="message-avatar">${avatar}</div>
+    <div class="message-content">
+      <div class="message-bubble ${isError ? 'error-bubble' : ''}">
+        <p>${escapeHtml(text)}</p>
       </div>
-      <div class="card-info">
-        <div class="card-name" title="${servant.name}">${servant.name}</div>
-        <div class="card-class">${className}</div>
-        <div class="card-stars">${stars}</div>
-      </div>
-      <div class="card-collection">No.${servant.collectionNo}</div>
-    </div>
-    <div class="card-bottom">
-      <div class="skill-name" title="${servant.skillName}">S${servant.skillNum}: ${servant.skillName}</div>
-      <div class="charge-badge">${servant.chargePercent}%</div>
     </div>
   `;
 
-  return card;
+  chatMessages.appendChild(msg);
+  scrollToBottom();
 }
 
+// === Append Assistant Response with Cards ===
+function appendAssistantResponse(data) {
+  const msg = document.createElement("div");
+  msg.className = "message assistant-message";
+
+  let cardsHtml = "";
+  if (data.servants && data.servants.length > 0) {
+    cardsHtml = `<div class="chat-cards-grid">
+      ${data.servants.map((s, i) => createCardHtml(s, i)).join("")}
+    </div>`;
+  }
+
+  msg.innerHTML = `
+    <div class="message-avatar">⧫</div>
+    <div class="message-content">
+      <div class="message-bubble">
+        <p>${escapeHtml(data.reply)}</p>
+        ${cardsHtml}
+      </div>
+    </div>
+  `;
+
+  chatMessages.appendChild(msg);
+  scrollToBottom();
+}
+
+// === Create Card HTML ===
+function createCardHtml(servant, index) {
+  const stars = getStars(servant.rarity);
+  const className = CLASS_NAMES[servant.className] || servant.className;
+
+  // 获取最大自充值显示
+  let chargeDisplay = "";
+  if (servant.npCharges && servant.npCharges.length > 0) {
+    const charges = servant.npCharges.map(c => `${c.chargePercent}%`).join("+");
+    chargeDisplay = charges;
+  } else if (servant.maxSelfCharge) {
+    chargeDisplay = `${servant.maxSelfCharge}%`;
+  }
+
+  return `
+    <div class="chat-card rarity-${servant.rarity}" style="animation-delay: ${Math.min(index * 20, 400)}ms">
+      <div class="chat-card-face">
+        <img src="${servant.faceUrl}" alt="${servant.name}" loading="lazy"
+             onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 42 42%22><rect fill=%22%23191c3a%22 width=%2242%22 height=%2242%22/><text x=%2221%22 y=%2225%22 text-anchor=%22middle%22 fill=%22%235c5a6e%22 font-size=%2212%22>?</text></svg>'">
+        <div class="chat-card-face-border"></div>
+      </div>
+      <div class="chat-card-info">
+        <div class="chat-card-name" title="${servant.name}">${servant.name}</div>
+        <div class="chat-card-meta">
+          <span class="chat-card-stars">${stars}</span>
+          <span>${className}</span>
+        </div>
+      </div>
+      ${chargeDisplay ? `<div class="chat-card-charge">${chargeDisplay}</div>` : ""}
+    </div>
+  `;
+}
+
+// === Typing Indicator ===
+function appendTypingIndicator() {
+  const msg = document.createElement("div");
+  msg.className = "message assistant-message";
+  msg.innerHTML = `
+    <div class="message-avatar">⧫</div>
+    <div class="message-content">
+      <div class="message-bubble">
+        <div class="typing-indicator">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+    </div>
+  `;
+  chatMessages.appendChild(msg);
+  scrollToBottom();
+  return msg;
+}
+
+// === Helpers ===
 function getStars(rarity) {
   if (rarity === 0) return "☆";
   return "★".repeat(rarity);
 }
 
-// === Event Listeners ===
-filterClass.addEventListener("change", applyFilters);
-filterRarity.addEventListener("change", applyFilters);
-filterSearch.addEventListener("input", applyFilters);
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
 
-// === Start ===
-document.addEventListener("DOMContentLoaded", init);
+function scrollToBottom() {
+  requestAnimationFrame(() => {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  });
+}
+
+// === Event Listeners ===
+sendBtn.addEventListener("click", sendMessage);
+
+chatInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+// Suggestion chips
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("chip")) {
+    chatInput.value = e.target.dataset.query;
+    sendMessage();
+  }
+});
+
+// Focus input on load
+document.addEventListener("DOMContentLoaded", () => {
+  chatInput.focus();
+});

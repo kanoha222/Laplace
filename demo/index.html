@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Laplace — FGO 智能助手 Demo：精确 30% NP 自充从者筛选器">
-  <title>Laplace — 30% NP 自充从者</title>
+  <meta name="description" content="Laplace — AI Native 对话式 FGO 数据助手">
+  <title>Laplace — FGO 智能助手</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -17,68 +17,53 @@
         <div class="logo-icon">⧫</div>
         <div class="logo-text">
           <h1>LAPLACE</h1>
-          <span class="tagline">FGO Intelligent Assistant</span>
+          <span class="tagline">AI Native FGO Assistant</span>
         </div>
       </div>
-      <div class="query-display">
-        <span class="query-label">QUERY</span>
-        <span class="query-text">"帮我找一下 30 自充的从者有哪些"</span>
+      <div class="model-badge" id="model-badge" title="当前 AI 模型">
+        <span class="model-dot"></span>
+        <span id="model-name">Ready</span>
       </div>
     </div>
   </header>
 
-  <!-- Controls Bar -->
-  <section id="controls">
-    <div class="controls-inner">
-      <div class="result-count">
-        <span class="count-number" id="count-display">—</span>
-        <span class="count-label">位从者</span>
-      </div>
-      <div class="filter-group">
-        <div class="filter-item">
-          <label for="filter-class">职阶</label>
-          <select id="filter-class">
-            <option value="all">全部</option>
-          </select>
-        </div>
-        <div class="filter-item">
-          <label for="filter-rarity">稀有度</label>
-          <select id="filter-rarity">
-            <option value="all">全部</option>
-            <option value="5">★★★★★</option>
-            <option value="4">★★★★</option>
-            <option value="3">★★★</option>
-            <option value="2">★★</option>
-            <option value="1">★</option>
-            <option value="0">☆</option>
-          </select>
-        </div>
-        <div class="filter-item search-box">
-          <label for="filter-search">搜索</label>
-          <input type="text" id="filter-search" placeholder="从者名称...">
+  <!-- Chat Area -->
+  <main id="chat-container">
+    <div class="chat-messages" id="chat-messages">
+      <!-- Welcome Message -->
+      <div class="message assistant-message">
+        <div class="message-avatar">⧫</div>
+        <div class="message-content">
+          <div class="message-bubble">
+            <p>你好，Master！我是 <strong>Laplace</strong>，你的 FGO 数据助手。</p>
+            <p>你可以用自然语言向我提问，例如：</p>
+            <div class="suggestion-chips">
+              <button class="chip" data-query="帮我找一下 30 自充的从者有哪些">30 自充的从者</button>
+              <button class="chip" data-query="大于 50 自充的从者有哪些">50% 以上自充</button>
+              <button class="chip" data-query="五星 Caster 有自充的从者">五星 Caster 自充</button>
+              <button class="chip" data-query="四星以上的 Berserker 有哪些">四星以上狂阶</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Cards Grid -->
-  <main id="cards-container">
-    <div class="loading" id="loading">
-      <div class="loading-spinner"></div>
-      <p>正在加载从者数据...</p>
-    </div>
-    <div class="cards-grid" id="cards-grid"></div>
-    <div class="no-results" id="no-results" style="display:none;">
-      <p>没有找到匹配的从者</p>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer id="app-footer">
-    <p>数据及部分逻辑源自开源项目 <a href="https://github.com/chaldea-center/chaldea" target="_blank" rel="noopener">Chaldea</a> · 
-       数据来源 <a href="https://atlasacademy.io/" target="_blank" rel="noopener">Atlas Academy</a></p>
-    <p class="license">CC-BY-NC-SA-4.0</p>
-  </footer>
+  <!-- Chat Input -->
+  <div id="chat-input-area">
+    <div class="input-wrapper">
+      <input type="text" id="chat-input" placeholder="输入你的问题... 例如「30 自充的从者有哪些」" autocomplete="off">
+      <button id="send-btn" title="发送">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+    <div class="input-footer">
+      <span>数据源自 <a href="https://atlasacademy.io/" target="_blank">Atlas Academy</a> · 逻辑参考 <a href="https://github.com/chaldea-center/chaldea" target="_blank">Chaldea</a></span>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>

@@ -7,6 +7,7 @@ chaldea-center/
 
 # Python virtual environment
 .venv/
+__pycache__/
 
 # Build output
 dist/
