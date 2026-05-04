@@ -2,6 +2,9 @@
 node_modules/
 vendor/
 
+# Reference source (read-only, do not commit)
+chaldea-center/
+
 # Build output
 dist/
 build/
