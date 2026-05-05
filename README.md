@@ -73,6 +73,16 @@ python3 server/sync_chaldea.py
 python3 -m server.data_loader
 ```
 
+**Chaldea 依赖说明**：
+- `chaldea-center/chaldea` **不是 runtime 强依赖**，仅在运行 `sync_chaldea.py` 更新领域知识时需要。
+- 普通运行只依赖已生成的 `server/knowledge/*.json` 与 `server/data/servants_db.json`。
+- 如需重新同步知识库，从 https://github.com/chaldea-center/chaldea.git 拉取 Chaldea 源码到 `chaldea-center/chaldea` 目录。
+- 支持通过 `CHALDEA_SRC_PATH` 环境变量指定 Chaldea 源码路径：
+  ```bash
+  export CHALDEA_SRC_PATH=/path/to/your/chaldea
+  python3 server/sync_chaldea.py
+  ```
+
 ### 测试
 
 ```bash
@@ -112,8 +122,12 @@ Laplace/
 │   ├── data/              # 生成的从者数据库
 │   └── knowledge/         # 提取的 JSON 格式领域知识
 ├── tests/                 # pytest 回归测试
-└── chaldea-center/        # Chaldea 参考源码子模块
+└── chaldea-center/        # Chaldea 参考源码（可选，仅 sync_chaldea.py 需要）
 ```
+
+**可选目录说明**：
+- `chaldea-center/` — 仅在需要更新领域知识时存在，普通运行不需要
+- `extractor/` — 早期 NP 充能筛选器原型，已迁移至 `server/data_loader.py`，保留仅用于向后兼容
 
 ## 合规声明
 

@@ -95,6 +95,40 @@
   3. 任何查询维度的增删必须同步更新 `server/schemas.py`。
 - **目的**：确保 Query Executor 接收的数据绝对合法，消除解析幻觉和格式漂移。
 
+### 5. Filter Registry 可扩展模式
+- **准则**：Query Executor 的过滤逻辑必须采用注册表模式（Filter Registry / Strategy Pattern），禁止在 `_match_servant` 中堆积 if-else。
+- **执行**：
+  1. 每个过滤维度（npCharge、className、traits 等）独立为 10-20 行函数。
+  2. 使用 `@register_filter("field_name")` 装饰器注册到 `FILTER_REGISTRY`。
+  3. `_match_servant` 仅负责遍历注册表执行过滤，保持 < 15 行。
+  4. 新增查询维度时，只需添加新过滤器函数，无需修改主匹配逻辑。
+- **目的**：控制圈复杂度 < 10，降低未来新增礼装、关卡、素材等查询维度时的维护成本。
+
+### 6. 知识与配置分离原则
+- **准则**：稳定领域知识与可运营配置必须物理隔离。
+- **执行**：
+  1. `server/knowledge/` — 存放 Chaldea 派生知识（FuncType、BuffType、SkillEffect 映射），由 `sync_chaldea.py` 生成，版本追踪。
+  2. `server/config/` — 存放可运营配置（昵称、术语映射、展示规则、Prompt 片段），支持热更新。
+  3. 严禁在 `main.py`、`prompts.py` 中硬编码翻译字典（如 `CLASS_MAP`），必须从 `config/` 加载。
+- **目的**：知识更新与配置维护解耦，支持运营团队独立修改配置而不触碰代码。
+
+### 7. Chaldea 依赖边界
+- **准则**：`chaldea-center/chaldea` 不是 runtime 强依赖，仅 `sync_chaldea.py` 更新领域知识时需要。
+- **执行**：
+  1. 普通运行只依赖已生成的 `server/knowledge/*.json` 与 `server/data/servants_db.json`。
+  2. 重新同步 Schema Mirror 时，从 https://github.com/chaldea-center/chaldea.git 拉取源码。
+  3. 支持通过 `CHALDEA_SRC_PATH` 环境变量指定源码路径，默认 `chaldea-center/chaldea`。
+  4. README 必须明确说明依赖边界，避免新人误解。
+- **目的**：降低部署门槛，明确开发环境与运行环境的依赖差异。
+
+### 8. 异步日志非阻塞
+- **准则**：高并发场景下，日志写入不得阻塞 FastAPI Event Loop。
+- **执行**：
+  1. 使用 FastAPI `BackgroundTasks` 将 `log_chat_trace` 加入后台任务队列。
+  2. API 路由完成业务逻辑后立即返回响应，日志异步写入。
+  3. 禁止在 `async def` 路由中直接调用同步 `FileHandler`。
+- **目的**：避免磁盘 I/O 阻塞导致的服务卡顿，提升高并发响应性能。
+
 ## 禁止事项
 
 - ❌ 未经确认删除文件或数据

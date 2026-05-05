@@ -5,8 +5,9 @@
 
 ## 后续迭代计划 (Next Steps)
 
-1. **多语言 UI 本地化支持 (I18n)**: 按照系统本地的语言（Locale）做显示。在前端识别用户的 `navigator.language`，如果是 `zh-CN` 等中文环境，则优先展示 `aliasCN`（中文名）与中文职阶名称；如果是其他环境，则展示 `name`（英文名）与原名。
-2. **更多查询维度的支持**: 增加指令卡性能、宝具 NP 回收等进阶硬核数值查询。
+1. **Phase 5 Batch 2 执行中**：优先处理 P0 技术债（数据入口单一化、生产访问边界），然后推进 P1 可扩展性改造（Query Executor Filter Registry、配置外置、Trace 调试闭环）。详见 `需求描述.md` Phase 5 详细规划。
+2. **多语言 UI 本地化支持 (I18n)**: 按照系统本地的语言（Locale）做显示。在前端识别用户的 `navigator.language`，如果是 `zh-CN` 等中文环境，则优先展示 `aliasCN`（中文名）与中文职阶名称；如果是其他环境，则展示 `name`（英文名）与原名。
+3. **更多查询维度的支持**: 增加指令卡性能、宝具 NP 回收等进阶硬核数值查询。
 
 ## 架构决策记录 (ADR)
 
@@ -61,6 +62,46 @@
 - **背景**: `llm_client.py` 原先依赖手动截取 Markdown code fence 后执行 `json.loads()`，在模型漏写 JSON 或输出额外文本时不稳定
 - **决策**: 首阶段意图解析优先使用 OpenAI-compatible `response_format/json_schema`；若模型网关明确不支持，则自动降级到普通文本 JSON 提取。所有 JSON 输出必须通过 `server/schemas.py` 中的 Pydantic Contract 校验后才能进入 Query Executor
 - **理由**: 在 API 层和应用层双重约束 LLM 输出，减少解析幻觉和格式漂移，同时保持与现有模型回退链兼容
+
+### ADR-008: Phase 5 架构治理优先级重排
+- **日期**: 2026-05-06
+- **状态**: 已采纳
+- **背景**: Phase 5 原始规划未明确优先级，且缺少部分关键治理项（异步日志、配置外置、Chaldea 依赖边界）
+- **决策**: 
+  1. 按 P0/P1/P2 三级重排任务优先级
+  2. P0: 数据入口单一化、生产访问边界（技术债 + 安全）
+  3. P1: Query Executor Filter Registry、配置外置、Trace 调试闭环（可扩展性）
+  4. P2: LLM Retry、前端体验、异步日志非阻塞、工程自动化（可靠性）
+  5. 新增：知识提取防护（正则样本测试、翻译映射一致性校验）
+- **理由**: 确保先解决最高风险的技术债和安全隐患，再推进架构优化
+
+### ADR-009: Query Executor 采用 Filter Registry 模式
+- **日期**: 2026-05-06
+- **状态**: 已采纳（Phase 5 P1）
+- **背景**: `_match_servant` 函数 170 行，圈复杂度 25+，新增查询维度时会继续膨胀
+- **决策**: 采用 Filter Registry / Strategy Pattern，每个过滤维度独立为函数，通过 `@register_filter` 装饰器注册，主匹配函数仅遍历注册表执行
+- **理由**: 控制圈复杂度 < 10，支持未来礼装、关卡、素材等查询维度的低成本扩展
+
+### ADR-010: 知识与配置物理分离
+- **日期**: 2026-05-06
+- **状态**: 已采纳（Phase 5 P1）
+- **背景**: `main.py` 硬编码 `CLASS_MAP`、`NP_CARD_MAP`，`prompts.py` 硬编码效果别名，与 `knowledge/` 中的知识库可能不同步
+- **决策**: 
+  1. `knowledge/` 存放稳定领域知识（sync_chaldea.py 生成）
+  2. 新建 `config/` 存放可运营配置（昵称、术语映射、展示规则）
+  3. 严禁在代码中硬编码翻译字典，必须从 config 加载
+- **理由**: 知识更新与配置维护解耦，支持运营团队独立修改配置
+
+### ADR-011: Chaldea 依赖边界明确化
+- **日期**: 2026-05-06
+- **状态**: 已采纳
+- **背景**: 新人容易误解 `chaldea-center/chaldea` 是 runtime 强依赖
+- **决策**: 
+  1. 明确仅 `sync_chaldea.py` 更新领域知识时需要 Chaldea 源码
+  2. 普通运行只依赖 `knowledge/*.json` 和 `servants_db.json`
+  3. 支持 `CHALDEA_SRC_PATH` 环境变量指定源码路径
+  4. Chaldea 源码从 https://github.com/chaldea-center/chaldea.git 拉取
+- **理由**: 降低部署门槛，避免不必要的 git submodule 或 clone 操作
 
 ## 已知问题 & 解决方案
 
