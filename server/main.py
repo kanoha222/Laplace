@@ -9,9 +9,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 import json
+import uuid
 from server.prompts import get_system_prompt, get_generation_prompt
 from server.llm_client import chat_completion
 from server.query_executor import execute_query, load_database
+from server.logger import log_chat_trace
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
@@ -42,6 +44,7 @@ class ChatResponse(BaseModel):
     count: int
     query: dict
     model: str
+    traceId: str | None = None
 
 
 @app.on_event("startup")
@@ -51,48 +54,44 @@ async def startup():
 
 
 @app.post("/api/chat", response_model=ChatResponse)
-async def chat(req: ChatRequest):
-    """
-    对话端点：接收用户自然语言，返回查询结果。
-
-    流程：
-    1. 用户消息 → LLM 意图解析
-    2. JSON 查询指令 → Query Executor
-    3. 结果 → 组装响应
-    """
-    user_message = req.message.strip()
-    if not user_message:
-        return ChatResponse(
-            reply='请输入你的问题，例如"帮我找一下 30 自充的从者有哪些"',
-            servants=[],
-            count=0,
-            query={},
-            model="",
-        )
-
-    # 1. LLM 意图解析
-    system_prompt = get_system_prompt()
+async def chat(request: ChatRequest):
+    """处理用户对话请求。"""
+    user_message = request.message
+    trace_id = uuid.uuid4().hex[:8]  # 生成一个 8 位的 trace_id
+    
+    # 1. 意图解析 (第一阶段)
     try:
-        parsed = await chat_completion(system_prompt, user_message)
+        parsed = await chat_completion(
+            system_prompt=get_system_prompt(),
+            user_message=user_message,
+            temperature=0.1,
+            json_mode=True
+        )
     except Exception as e:
+        print(f"[{trace_id}] LLM Parse Error: {e}")
+        log_chat_trace(trace_id, user_message, {}, 0, "无法连接到 LLM 或解析失败，请检查模型配置。", error=str(e))
         return ChatResponse(
-            reply=f"AI 服务暂时不可用：{str(e)}",
+            reply="抱歉，我遇到了网络问题或模型暂时不可用，请稍后再试。",
             servants=[],
             count=0,
             query={},
             model="error",
+            traceId=trace_id
         )
 
     model_used = parsed.pop("_model", "unknown")
 
     # 2. 检查意图
     if parsed.get("intent") != "query_servants":
+        reply_text = parsed.get("rawResponse", "抱歉，我目前只能回答 FGO 从者相关的问题。")
+        log_chat_trace(trace_id, user_message, parsed, 0, reply_text)
         return ChatResponse(
-            reply=parsed.get("rawResponse", "抱歉，我目前只能回答 FGO 从者相关的问题。"),
+            reply=reply_text,
             servants=[],
             count=0,
             query=parsed,
             model=model_used,
+            traceId=trace_id
         )
 
     # 3. 执行查询
@@ -137,12 +136,15 @@ async def chat(req: ChatRequest):
         if not final_reply:
             raise ValueError("Empty response from LLM")
     except Exception as e:
-        print(f"RAG Generate Error: {e}")
+        print(f"[{trace_id}] RAG Generate Error: {e}")
         # 如果生成失败，降级回旧的逻辑
         response_template = parsed.get("responseTemplate", "为你找到了以下从者：")
         final_reply = f"{response_template}（共 {total_found} 位）"
         if total_found > max_context_size:
             final_reply += f"（仅显示前 {max_context_size} 位详情，更多请查看卡片）"
+
+    # 记录完整链路
+    log_chat_trace(trace_id, user_message, conditions, total_found, final_reply)
 
     # 限制返回给前端的数量，避免响应过大
     max_results = 50
@@ -154,6 +156,7 @@ async def chat(req: ChatRequest):
         count=total_found,
         query=conditions,
         model=model_used,
+        traceId=trace_id
     )
 
 

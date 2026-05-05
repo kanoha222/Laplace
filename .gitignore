@@ -43,3 +43,6 @@ tmp/
 # Coverage
 coverage/
 .nyc_output/
+
+# Server Logs
+server/logs/
