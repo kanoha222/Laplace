@@ -1,0 +1,125 @@
+import asyncio
+
+import httpx
+import pytest
+
+import server.llm_client as llm_client
+
+
+VALID_JSON = '{"intent":"query_servants","conditions":{"npCharge":{"op":"eq","value":30}}}'
+
+
+class FakeResponse:
+    def __init__(self, status_code=200, content=VALID_JSON, text=None):
+        self.status_code = status_code
+        self._content = content
+        self.text = text if text is not None else str(content)
+
+    def json(self):
+        return {"choices": [{"message": {"content": self._content}}]}
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            request = httpx.Request("POST", "https://example.test/chat/completions")
+            response = httpx.Response(self.status_code, request=request, text=self.text)
+            raise httpx.HTTPStatusError("error", request=request, response=response)
+
+
+class FakeAsyncClient:
+    requests = []
+    responses = []
+
+    def __init__(self, timeout):
+        self.timeout = timeout
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        return False
+
+    async def post(self, url, json, headers):
+        self.requests.append(json)
+        item = self.responses.pop(0)
+        if isinstance(item, Exception):
+            raise item
+        return item
+
+
+@pytest.fixture(autouse=True)
+def fake_httpx(monkeypatch):
+    FakeAsyncClient.requests = []
+    FakeAsyncClient.responses = []
+    monkeypatch.setattr(llm_client.httpx, "AsyncClient", FakeAsyncClient)
+    monkeypatch.setattr(llm_client, "PRIMARY_MODEL", "primary")
+    monkeypatch.setattr(llm_client, "FALLBACK_MODELS", ["fallback"])
+
+
+def run(coro):
+    return asyncio.run(coro)
+
+
+def test_parse_intent_response_accepts_plain_json():
+    parsed = llm_client.parse_intent_response(VALID_JSON)
+
+    assert parsed["intent"] == "query_servants"
+    assert parsed["conditions"]["npCharge"]["value"] == 30
+
+
+def test_parse_intent_response_extracts_fenced_json():
+    parsed = llm_client.parse_intent_response(f"```json\n{VALID_JSON}\n```")
+
+    assert parsed["conditions"]["npCharge"]["op"] == "eq"
+
+
+def test_parse_intent_response_extracts_json_with_surrounding_text():
+    parsed = llm_client.parse_intent_response(f"好的，结果如下：\n{VALID_JSON}\n谢谢")
+
+    assert parsed["conditions"]["npCharge"]["value"] == 30
+
+
+def test_parse_intent_response_rejects_invalid_json_and_schema():
+    with pytest.raises(ValueError):
+        llm_client.parse_intent_response("not json")
+
+    with pytest.raises(ValueError):
+        llm_client.parse_intent_response('{"intent":"unknown","conditions":{}}')
+
+
+def test_chat_completion_uses_structured_response_format():
+    FakeAsyncClient.responses = [FakeResponse(content=VALID_JSON)]
+
+    result = run(llm_client.chat_completion("system", "user", model="primary"))
+
+    assert result["_model"] == "primary"
+    assert result["_response_format"] == "json_schema"
+    assert FakeAsyncClient.requests[0]["response_format"]["type"] == "json_schema"
+
+
+def test_chat_completion_downgrades_when_response_format_is_unsupported():
+    FakeAsyncClient.responses = [
+        FakeResponse(
+            status_code=400,
+            content="",
+            text='{"error":"response_format json_schema unsupported"}',
+        ),
+        FakeResponse(content=f"```json\n{VALID_JSON}\n```"),
+    ]
+
+    result = run(llm_client.chat_completion("system", "user", model="primary"))
+
+    assert result["_response_format"] == "text_fallback"
+    assert "response_format" in FakeAsyncClient.requests[0]
+    assert "response_format" not in FakeAsyncClient.requests[1]
+
+
+def test_chat_completion_tries_fallback_model_after_schema_failure():
+    FakeAsyncClient.responses = [
+        FakeResponse(content='{"intent":"unknown","conditions":{}}'),
+        FakeResponse(content=VALID_JSON),
+    ]
+
+    result = run(llm_client.chat_completion("system", "user", model="primary"))
+
+    assert result["_model"] == "fallback"
+    assert len(FakeAsyncClient.requests) == 2

@@ -7,6 +7,7 @@ Laplace — Query Executor
 """
 
 import json
+import re
 from pathlib import Path
 from server.individuality import filter_by_traits
 
@@ -16,6 +17,13 @@ NICKNAMES_PATH = Path(__file__).parent / "knowledge" / "nicknames.json"
 # 全局缓存
 _servants_db: list[dict] | None = None
 _nicknames: dict[str, str] | None = None
+
+
+def _normalize_text(value: str) -> str:
+    """Normalize names for nickname and substring matching."""
+    text = value.strip().lower()
+    text = re.sub(r"[\s·•・\-.()（）〔〕\[\]「」『』_]+", "", text)
+    return text
 
 
 def load_nicknames() -> dict[str, str]:
@@ -126,13 +134,13 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
     name = conditions.get("name")
     if name is not None and isinstance(name, str) and name.strip():
         query_name = name.strip().lower()
+        normalized_query_name = _normalize_text(name)
         
         # 尝试昵称转换
         nicknames = load_nicknames()
-        # 这里的 key 也要小写匹配
         mapped_data = None
         for nick, data in nicknames.items():
-            if nick.lower() == query_name:
+            if _normalize_text(nick) == normalized_query_name:
                 mapped_data = data
                 break
         
@@ -158,14 +166,28 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
         en_name = servant.get("name", "").lower()
         cn_name = servant.get("aliasCN", "").lower()
         jp_name = servant.get("originalName", "").lower()
+        normalized_en_name = _normalize_text(en_name)
+        normalized_cn_name = _normalize_text(cn_name)
+        normalized_jp_name = _normalize_text(jp_name)
         
         # 如果有映射名，检查映射后的名字或原始输入名字是否匹配
         if mapped_name:
-            if (mapped_name not in en_name) and (mapped_name not in cn_name) and (mapped_name not in jp_name) and \
-               (query_name not in en_name) and (query_name not in cn_name) and (query_name not in jp_name):
+            normalized_mapped_name = _normalize_text(mapped_name)
+            if (
+                (normalized_mapped_name != normalized_en_name)
+                and (normalized_mapped_name != normalized_cn_name)
+                and (normalized_mapped_name != normalized_jp_name)
+                and (normalized_query_name not in normalized_en_name)
+                and (normalized_query_name not in normalized_cn_name)
+                and (normalized_query_name not in normalized_jp_name)
+            ):
                 return False
         else:
-            if (query_name not in en_name) and (query_name not in cn_name) and (query_name not in jp_name):
+            if (
+                (normalized_query_name not in normalized_en_name)
+                and (normalized_query_name not in normalized_cn_name)
+                and (normalized_query_name not in normalized_jp_name)
+            ):
                 return False
 
     # 单效果筛选

@@ -112,7 +112,7 @@ def parse_effect_schema(file_path: Path) -> list[dict]:
         pattern = rf"static\s+List<SkillEffect>\s+{cat_name}\s*=\s*\[(.*?)\];"
         match = re.search(pattern, content, re.DOTALL)
         if match:
-            members = re.findall(r"(\w+)(?:,|\s)", match.group(1))
+            members = re.findall(r"\b(\w+)\b", match.group(1))
             for m in members:
                 categories[m] = cat_label
 

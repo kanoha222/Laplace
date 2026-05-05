@@ -55,9 +55,18 @@
 - **决策**: 在 Python 组装 JSON 上下文时，强制将职阶、卡色、技能效果、宝具效果翻译为标准中文术语后再投喂给 LLM
 - **理由**: 根除术语翻译幻觉，精简 Prompt，降低 Token 成本，提升输出专业度
 
+### ADR-007: LLM Contract — JSON Schema + Pydantic 校验
+- **日期**: 2026-05-05
+- **状态**: 已采纳
+- **背景**: `llm_client.py` 原先依赖手动截取 Markdown code fence 后执行 `json.loads()`，在模型漏写 JSON 或输出额外文本时不稳定
+- **决策**: 首阶段意图解析优先使用 OpenAI-compatible `response_format/json_schema`；若模型网关明确不支持，则自动降级到普通文本 JSON 提取。所有 JSON 输出必须通过 `server/schemas.py` 中的 Pydantic Contract 校验后才能进入 Query Executor
+- **理由**: 在 API 层和应用层双重约束 LLM 输出，减少解析幻觉和格式漂移，同时保持与现有模型回退链兼容
+
 ## 已知问题 & 解决方案
 
 - **macOS pip 外部管理**: `pip install` 报错 `externally-managed-environment`，需要使用 `python3 -m venv .venv` 创建虚拟环境
+- **pytest 未预装**: Phase 5 起 `pytest` 已加入 `server/requirements.txt`，新环境需重新执行 `pip install -r server/requirements.txt`
+- **昵称被 LLM 改写导致搜不到从者**: 如 `水 C 呆` 被改写成 `泳装阿尔托莉雅` 后，数据库无法命中。解决方案是双层防护：`prompts.py` 明确要求保留社区别名原文，`query_executor.py` 对昵称匹配做归一化（忽略空格/常见分隔符）并优先按昵称表做精确映射。
 
 ## 项目里程碑
 
@@ -71,6 +80,7 @@
 | 2026-05-05 | Phase 3 完成 | 实现了多语言映射、特性（Trait）匹配算法、宝具与配卡等从者深层属性过滤 |
 | 2026-05-05 | Phase 4 完成 | 实现了 Two-Step RAG 架构（生成式 UI），分离了 LLM 总结文案与 UI 数据流 |
 | 2026-05-05 | Phase 5 启动 | 实现了全链路日志追踪（Logging）与数据预消化（Pre-digestion），补齐了宝具特效解析 |
+| 2026-05-05 | Phase 5 Batch 1 | 完成 LLM Contract、Query Executor 回归测试、Schema Mirror 回归测试与真实 LLM JSON Schema smoke test |
 
 ## 技术备忘
 
@@ -80,3 +90,4 @@
 - **Schema Mirror 知识源**: Chaldea `effect.dart` (SkillEffect 40+分类)、`func.dart` (FuncType 165+)、`buff.dart` (BuffType 200+)、`common.dart` (SvtClass 50+)
 - **Chaldea 关键数据路径**: `servant.skills[] → skill.functions[] → function.svals[9].Value` (Lv.10数值)
 - **效果分类体系**: 攻击(20种) / 防御(11种) / 异常(15种) / 辅助(9种) = 55+ 子分类
+- **测试命令**: 默认回归测试使用 `.venv/bin/python -m pytest`；真实 LLM smoke test 使用 `RUN_LIVE_LLM_TESTS=1 .venv/bin/python -m pytest tests/test_llm_client_live.py -s`
