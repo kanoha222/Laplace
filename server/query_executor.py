@@ -108,10 +108,15 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
         if servant.get("className", "").lower() != class_name.lower():
             return False
 
-    # 名称搜索
+    # 名称搜索（支持英文、日文和中文翻译）
     name = conditions.get("name")
-    if name is not None:
-        if name.lower() not in servant.get("name", "").lower():
+    if name is not None and isinstance(name, str) and name.strip():
+        query_name = name.strip().lower()
+        en_name = servant.get("name", "").lower()
+        cn_name = servant.get("aliasCN", "").lower()
+        jp_name = servant.get("originalName", "").lower()
+        
+        if (query_name not in en_name) and (query_name not in cn_name) and (query_name not in jp_name):
             return False
 
     # 单效果筛选

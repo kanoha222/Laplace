@@ -49,6 +49,15 @@ def load_effect_schema() -> list[dict]:
         data = json.load(f)
     return data.get("effects", [])
 
+def load_svt_names_mapping() -> dict:
+    """加载 mappings.json 中的从者中文翻译。"""
+    mappings_path = KNOWLEDGE_DIR / "mappings.json"
+    if not mappings_path.exists():
+        return {}
+    with open(mappings_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return data.get("svt_names", {})
+
 
 def build_effect_matcher(effects: list[dict]) -> dict:
     """
@@ -184,7 +193,7 @@ def extract_skill_effects(
     return all_effects, skill_details
 
 
-def build_database(servants: list[dict], matcher: dict) -> list[dict]:
+def build_database(servants: list[dict], matcher: dict, name_mapping: dict) -> list[dict]:
     """构建通用从者数据库。"""
     db = []
     total_with_effects = 0
@@ -230,10 +239,18 @@ def build_database(servants: list[dict], matcher: dict) -> list[dict]:
                     np_target = "support"
                 break
 
+        # 获取原名与中文翻译
+        original_name = svt.get("originalName", "")
+        alias_cn = ""
+        if original_name in name_mapping:
+            alias_cn = name_mapping[original_name].get("CN", "")
+
         entry = {
             "id": svt["id"],
             "collectionNo": svt.get("collectionNo", 0),
             "name": svt.get("name", "Unknown"),
+            "originalName": original_name,
+            "aliasCN": alias_cn,
             "rarity": svt.get("rarity", 0),
             "className": svt.get("className", "unknown"),
             "faceUrl": get_face_url(svt),
@@ -270,17 +287,19 @@ def main():
     print("=" * 50)
 
     # 加载效果知识库
-    print("\n📚 加载效果知识库...")
+    print("\n📚 加载知识库...")
     effects = load_effect_schema()
+    name_mapping = load_svt_names_mapping()
     if effects:
         matcher = build_effect_matcher(effects)
         print(f"   ✅ 加载 {len(effects)} 个效果分类")
     else:
         matcher = {"funcType": {}, "buffType": {}}
         print("   ⚠️  无效果知识库，仅提取 NP 充能数据")
+    print(f"   ✅ 加载 {len(name_mapping)} 个多语言名字翻译")
 
     servants = fetch_servants()
-    db = build_database(servants, matcher)
+    db = build_database(servants, matcher, name_mapping)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     output_path = OUTPUT_DIR / "servants_db.json"
