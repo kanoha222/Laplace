@@ -144,6 +144,15 @@ async def chat(request: ChatRequest):
         translated_effects = [get_effect_translation(e) for e in raw_effects]
         translated_np_effects = [get_effect_translation(e) for e in raw_np_effects]
         
+        # 增加负向提示，防止 LLM 脑补缺失的色卡
+        card_buff_status = []
+        if "upArts" in raw_effects: card_buff_status.append("有蓝卡提升")
+        else: card_buff_status.append("无蓝卡提升")
+        if "upQuick" in raw_effects: card_buff_status.append("有绿卡提升")
+        else: card_buff_status.append("无绿卡提升")
+        if "upBuster" in raw_effects: card_buff_status.append("有红卡提升")
+        else: card_buff_status.append("无红卡提升")
+
         top_results.append({
             "name": s.get("name"),
             "aliasCN": s.get("aliasCN"),
@@ -153,7 +162,8 @@ async def chat(request: ChatRequest):
             "npCard": NP_CARD_MAP.get(str(raw_np_card).lower(), raw_np_card),
             "npTarget": NP_TARGET_MAP.get(str(raw_np_target).lower(), raw_np_target),
             "skillEffects": translated_effects,
-            "npEffects": translated_np_effects
+            "npEffects": translated_np_effects,
+            "__internal_card_buff_check": " | ".join(card_buff_status) # 仅供 AI 内部逻辑判定，不建议在回复中直接列出
         })
         
     context_data = {
@@ -168,9 +178,9 @@ async def chat(request: ChatRequest):
     try:
         # LLM 的第二次调用（非严格 JSON，返回纯文本）
         generation_response = await chat_completion(
-            system_prompt="You are a helpful AI assistant.",
+            system_prompt="You are a helpful AI assistant. You MUST strictly follow the provided data and NEVER use your internal knowledge about FGO.",
             user_message=generation_prompt,
-            temperature=0.7,
+            temperature=0.1,
             json_mode=False
         )
         final_reply = generation_response.get("text", "").strip()
@@ -185,7 +195,14 @@ async def chat(request: ChatRequest):
             final_reply += f"（仅显示前 {max_context_size} 位详情，更多请查看卡片）"
 
     # 记录完整链路
-    log_chat_trace(trace_id, user_message, conditions, total_found, final_reply)
+    log_chat_trace(
+        trace_id=trace_id,
+        user_message=user_message,
+        parsed_intent=conditions,
+        found_count=total_found,
+        final_reply=final_reply,
+        context=context_data
+    )
 
     # 限制返回给前端的数量，避免响应过大
     max_results = 50

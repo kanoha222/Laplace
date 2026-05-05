@@ -35,7 +35,7 @@ if not logger.handlers:
     file_handler.setFormatter(JsonlFormatter())
     logger.addHandler(file_handler)
 
-def log_chat_trace(trace_id: str, user_message: str, parsed_intent: dict, found_count: int, final_reply: str, error: str = None):
+def log_chat_trace(trace_id: str, user_message: str, parsed_intent: dict, found_count: int, final_reply: str, context: dict = None, error: str = None):
     """
     记录完整的查询链路信息。
     """
@@ -44,7 +44,8 @@ def log_chat_trace(trace_id: str, user_message: str, parsed_intent: dict, found_
         "query": user_message,
         "intent": parsed_intent,
         "results_count": found_count,
-        "reply": final_reply
+        "reply": final_reply,
+        "context": context
     }
     if error:
         trace_data["error"] = error

@@ -148,6 +148,36 @@ def classify_target_type(func_target_type: str) -> str:
     return "other"
 
 
+def refine_card_effects(func: dict, matched_effects: set[str]) -> set[str]:
+    """根据 Buff 名称精确过滤卡色魔放，防止通用枚举导致的污染。"""
+    buffs = func.get("buffs", [])
+    has_generic_buff = any(b.get("type") in ("upCommandall", "upCommandatk", "upCommandstar", "upCommandnp") for b in buffs)
+    
+    if not has_generic_buff:
+        return matched_effects
+        
+    # 如果当前集合中有卡色效果，则根据 buff name 进行二次判定
+    card_effects = {"upArts", "upQuick", "upBuster"}
+    if not (matched_effects & card_effects):
+        return matched_effects
+        
+    refined = set()
+    for eff in matched_effects:
+        if eff in card_effects:
+            for b in buffs:
+                b_name = b.get("name", "").lower()
+                # 显式包含颜色名称才保留
+                if eff == "upArts" and "arts" in b_name: refined.add(eff)
+                if eff == "upQuick" and "quick" in b_name: refined.add(eff)
+                if eff == "upBuster" and "buster" in b_name: refined.add(eff)
+                # 如果是真正的三色提升 (Command Performance Up)
+                if "command" in b_name and ("performance" in b_name or "up" in b_name) and "arts" not in b_name and "quick" not in b_name and "buster" not in b_name:
+                    refined.add(eff)
+        else:
+            refined.add(eff)
+    return refined
+
+
 def extract_skill_effects(
     servant: dict, matcher: dict
 ) -> tuple[set[str], list[dict]]:
@@ -176,6 +206,9 @@ def extract_skill_effects(
             for buff in func.get("buffs", []):
                 buff_type = buff.get("type", "")
                 matched_effects.update(matcher["buffType"].get(buff_type, []))
+
+            # 二次精炼：防止卡色污染
+            matched_effects = refine_card_effects(func, matched_effects)
 
             for effect_name in matched_effects:
                 all_effects.add(effect_name)
@@ -234,6 +267,9 @@ def build_database(servants: list[dict], matcher: dict, name_mapping: dict) -> l
                     for buff in func.get("buffs", []):
                         buff_type = buff.get("type", "")
                         matched_effects.update(matcher["buffType"].get(buff_type, []))
+                    
+                    # 二次精炼：防止卡色污染
+                    matched_effects = refine_card_effects(func, matched_effects)
                     
                     np_effects_set.update(matched_effects)
 

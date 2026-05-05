@@ -41,6 +41,20 @@
   2. 知识提取方式维护成本低，Chaldea 更新时只需重新提取枚举
   3. LLM 具备知识后可自动处理新的查询类型，不需要每种效果都写查询逻辑
 
+### ADR-005: 全链路日志追踪 (Logging & Traceability)
+- **日期**: 2026-05-05
+- **状态**: 已采纳
+- **背景**: 用户反馈 LLM 偶尔会出现胡言乱语（如“破盾”），需要手段回溯其意图解析与召回上下文的原始状态
+- **决策**: 实现基于 `trace_id` 的结构化 JSONL 日志记录。请求进入时生成 UUID，贯穿 API -> 意图解析 -> 数据库查询 -> RAG 生成。日志持久化于 `server/logs/query_trace.jsonl`
+- **理由**: 提高可观测性，使“黑盒”LLM 的行为可审计、可重现
+
+### ADR-006: 数据后端预消化 (Pre-digestion)
+- **日期**: 2026-05-05
+- **状态**: 已采纳
+- **背景**: LLM 在 RAG 阶段翻译英文枚举（如 `breakAvoidance`）不专业，且浪费 Token
+- **决策**: 在 Python 组装 JSON 上下文时，强制将职阶、卡色、技能效果、宝具效果翻译为标准中文术语后再投喂给 LLM
+- **理由**: 根除术语翻译幻觉，精简 Prompt，降低 Token 成本，提升输出专业度
+
 ## 已知问题 & 解决方案
 
 - **macOS pip 外部管理**: `pip install` 报错 `externally-managed-environment`，需要使用 `python3 -m venv .venv` 创建虚拟环境
@@ -56,6 +70,7 @@
 | 2026-05-05 | Phase 2 完成 | 实现了 sync_chaldea.py 提取 5 个 Dart 文件的效果知识并与 LLM 集成 |
 | 2026-05-05 | Phase 3 完成 | 实现了多语言映射、特性（Trait）匹配算法、宝具与配卡等从者深层属性过滤 |
 | 2026-05-05 | Phase 4 完成 | 实现了 Two-Step RAG 架构（生成式 UI），分离了 LLM 总结文案与 UI 数据流 |
+| 2026-05-05 | Phase 5 启动 | 实现了全链路日志追踪（Logging）与数据预消化（Pre-digestion），补齐了宝具特效解析 |
 
 ## 技术备忘
 
