@@ -9,7 +9,7 @@
       "ptAll"
     ]
   },
-  "count": 159,
+  "count": 170,
   "servants": [
     {
       "id": 100100,
@@ -21,7 +21,7 @@
       "skillName": "Shining Path EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1001003.png"
+      "faceUrl": ""
     },
     {
       "id": 101800,
@@ -33,7 +33,7 @@
       "skillName": "Perfect Composition EX",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1018003.png"
+      "faceUrl": ""
     },
     {
       "id": 200200,
@@ -45,7 +45,19 @@
       "skillName": "Treasury of Babylon EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2002003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 501900,
+      "collectionNo": 37,
+      "name": "Zhuge Liang (Lord El-Melloi II)",
+      "rarity": 5,
+      "className": "caster",
+      "chargePercent": 30,
+      "skillName": "Discerning Eye A",
+      "skillNum": 1,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 700700,
@@ -57,7 +69,7 @@
       "skillName": "Vampirism A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_7007003.png"
+      "faceUrl": ""
     },
     {
       "id": 102700,
@@ -69,7 +81,7 @@
       "skillName": "Zettou A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1027003.png"
+      "faceUrl": ""
     },
     {
       "id": 600500,
@@ -81,7 +93,7 @@
       "skillName": "霧夜の殺人 EX",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6005003.png"
+      "faceUrl": ""
     },
     {
       "id": 100900,
@@ -93,7 +105,7 @@
       "skillName": "Secret of Pedigree EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1009003.png"
+      "faceUrl": ""
     },
     {
       "id": 300400,
@@ -105,7 +117,7 @@
       "skillName": "Fruits of Benefaction",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3004003.png"
+      "faceUrl": ""
     },
     {
       "id": 301200,
@@ -117,7 +129,19 @@
       "skillName": "Primordial Rune",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3012003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 100600,
+      "collectionNo": 90,
+      "name": "Nero Claudius (Bride)",
+      "rarity": 5,
+      "className": "saber",
+      "chargePercent": 30,
+      "skillName": "Stars for the Sky EX",
+      "skillNum": 1,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 102800,
@@ -129,7 +153,7 @@
       "skillName": "Yin-Yang A+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1028003.png"
+      "faceUrl": ""
     },
     {
       "id": 1100200,
@@ -141,7 +165,7 @@
       "skillName": "Treasure of Monte Cristo A+",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11002003.png"
+      "faceUrl": ""
     },
     {
       "id": 401300,
@@ -152,8 +176,8 @@
       "chargePercent": 30,
       "skillName": "Queen's Figure A+",
       "skillNum": 1,
-      "targetType": "ptAll",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4013003.png"
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 400200,
@@ -165,7 +189,7 @@
       "skillName": "Those Who Go Towards the Beyond A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4002003.png"
+      "faceUrl": ""
     },
     {
       "id": 602100,
@@ -177,7 +201,7 @@
       "skillName": "Oni's Head EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6021003.png"
+      "faceUrl": ""
     },
     {
       "id": 702300,
@@ -189,7 +213,7 @@
       "skillName": "Thunder God's Manifestation A+",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_7023003.png"
+      "faceUrl": ""
     },
     {
       "id": 302400,
@@ -201,7 +225,7 @@
       "skillName": "Goddess Morph (Heaven) A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3024003.png"
+      "faceUrl": ""
     },
     {
       "id": 202600,
@@ -213,7 +237,7 @@
       "skillName": "Summer Splash! EX",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2026003.png"
+      "faceUrl": ""
     },
     {
       "id": 600800,
@@ -225,7 +249,7 @@
       "skillName": "Akin to Isis A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6008003.png"
+      "faceUrl": ""
     },
     {
       "id": 401800,
@@ -237,7 +261,7 @@
       "skillName": "Lucha Libre EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4018003.png"
+      "faceUrl": ""
     },
     {
       "id": 602500,
@@ -249,7 +273,7 @@
       "skillName": "Evening Bell, Homeward EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6025003.png"
+      "faceUrl": ""
     },
     {
       "id": 102900,
@@ -261,7 +285,7 @@
       "skillName": "聖剣使い（星） A+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1029003.png"
+      "faceUrl": ""
     },
     {
       "id": 702500,
@@ -273,7 +297,7 @@
       "skillName": "Laws of the Shinsengumi EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_7025003.png"
+      "faceUrl": ""
     },
     {
       "id": 1000200,
@@ -285,7 +309,7 @@
       "skillName": "Crime Ballet A+",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_10002003.png"
+      "faceUrl": ""
     },
     {
       "id": 503000,
@@ -297,7 +321,7 @@
       "skillName": "Bedchamber Storyteller EX",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5030003.png"
+      "faceUrl": ""
     },
     {
       "id": 2500100,
@@ -309,7 +333,7 @@
       "skillName": "Light in the Abyss A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_25001003.png"
+      "faceUrl": ""
     },
     {
       "id": 2500200,
@@ -321,7 +345,7 @@
       "skillName": "All Things in Nature A+",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_25002003.png"
+      "faceUrl": ""
     },
     {
       "id": 603200,
@@ -333,7 +357,7 @@
       "skillName": "Familiar (Dove) D",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6032003.png"
+      "faceUrl": ""
     },
     {
       "id": 402800,
@@ -345,7 +369,7 @@
       "skillName": "Mental Schism A+",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4028003.png"
+      "faceUrl": ""
     },
     {
       "id": 402900,
@@ -357,7 +381,7 @@
       "skillName": "Diatrekhōn Astēr Lonkhē B+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4029003.png"
+      "faceUrl": ""
     },
     {
       "id": 1000700,
@@ -369,7 +393,7 @@
       "skillName": "Persistence B",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_10007003.png"
+      "faceUrl": ""
     },
     {
       "id": 203100,
@@ -381,7 +405,7 @@
       "skillName": "Light of Possibility B",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2031003.png"
+      "faceUrl": ""
     },
     {
       "id": 1000800,
@@ -393,7 +417,19 @@
       "skillName": "Kamuy Yukar A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_10008003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 303600,
+      "collectionNo": 232,
+      "name": "Bradamante",
+      "rarity": 5,
+      "className": "lancer",
+      "chargePercent": 30,
+      "skillName": "Angelica Cathay C",
+      "skillNum": 3,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 103700,
@@ -405,7 +441,7 @@
       "skillName": "Meal Prepared in a Phantom House A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1037003.png"
+      "faceUrl": ""
     },
     {
       "id": 603600,
@@ -417,7 +453,7 @@
       "skillName": "圏境（極） EX",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6036003.png"
+      "faceUrl": ""
     },
     {
       "id": 504200,
@@ -429,7 +465,7 @@
       "skillName": "Curse (Poem) D+",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5042003.png"
+      "faceUrl": ""
     },
     {
       "id": 1000900,
@@ -441,7 +477,7 @@
       "skillName": "ヒュージスケール B",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_10009003.png"
+      "faceUrl": ""
     },
     {
       "id": 703300,
@@ -453,7 +489,7 @@
       "skillName": "Clairvoyance (Transcendent) EX",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_7033003.png"
+      "faceUrl": ""
     },
     {
       "id": 1100700,
@@ -465,7 +501,7 @@
       "skillName": "Demon King of the Sixth Heaven EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11007003.png"
+      "faceUrl": ""
     },
     {
       "id": 404000,
@@ -477,7 +513,7 @@
       "skillName": "Grace of the King of Gods A+",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4040003.png"
+      "faceUrl": ""
     },
     {
       "id": 2500400,
@@ -489,7 +525,7 @@
       "skillName": "妖星の火輪 A+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_25004003.png"
+      "faceUrl": ""
     },
     {
       "id": 204000,
@@ -501,7 +537,7 @@
       "skillName": "Meeting Checkpoint of Osaka A++",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2040003.png"
+      "faceUrl": ""
     },
     {
       "id": 403800,
@@ -513,7 +549,7 @@
       "skillName": "Devote Thyself to One Purpose (Love) A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4038003.png"
+      "faceUrl": ""
     },
     {
       "id": 104200,
@@ -525,7 +561,7 @@
       "skillName": "魔力放出（光／古） A+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1042003.png"
+      "faceUrl": ""
     },
     {
       "id": 304200,
@@ -537,7 +573,7 @@
       "skillName": "Divinity Transformation B",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3042003.png"
+      "faceUrl": ""
     },
     {
       "id": 504500,
@@ -548,8 +584,8 @@
       "chargePercent": 30,
       "skillName": "Charisma of Hope B",
       "skillNum": 1,
-      "targetType": "ptAll",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5045003.png"
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 2300400,
@@ -561,7 +597,7 @@
       "skillName": "Divine Power (Ink) B",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_23004003.png"
+      "faceUrl": ""
     },
     {
       "id": 403700,
@@ -573,7 +609,7 @@
       "skillName": "Indefatigable B+",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4037003.png"
+      "faceUrl": ""
     },
     {
       "id": 304600,
@@ -585,7 +621,7 @@
       "skillName": "Sworn Enemy of Gods A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3046003.png"
+      "faceUrl": ""
     },
     {
       "id": 1101000,
@@ -597,7 +633,7 @@
       "skillName": "Genji Must Die A++",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11010003.png"
+      "faceUrl": ""
     },
     {
       "id": 901100,
@@ -609,7 +645,7 @@
       "skillName": "Golden Arrow A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_9011003.png"
+      "faceUrl": ""
     },
     {
       "id": 704000,
@@ -621,7 +657,7 @@
       "skillName": "Charisma of Yearning B",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_7040003.png"
+      "faceUrl": ""
     },
     {
       "id": 304800,
@@ -633,7 +669,7 @@
       "skillName": "Dragon Heart B",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3048003.png"
+      "faceUrl": ""
     },
     {
       "id": 105100,
@@ -645,7 +681,7 @@
       "skillName": "Rengoku B",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1051003.png"
+      "faceUrl": ""
     },
     {
       "id": 2501000,
@@ -657,7 +693,7 @@
       "skillName": "Holy Shroud (False) B",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_25010003.png"
+      "faceUrl": ""
     },
     {
       "id": 404300,
@@ -669,7 +705,7 @@
       "skillName": "Thought Keys EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4043003.png"
+      "faceUrl": ""
     },
     {
       "id": 2500900,
@@ -680,8 +716,8 @@
       "chargePercent": 30,
       "skillName": "Dominator Fox A",
       "skillNum": 1,
-      "targetType": "ptAll",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_25009003.png"
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 105300,
@@ -693,7 +729,7 @@
       "skillName": "Holy King Trưng EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1053003.png"
+      "faceUrl": ""
     },
     {
       "id": 1001300,
@@ -705,7 +741,7 @@
       "skillName": "Vision Quest A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_10013003.png"
+      "faceUrl": ""
     },
     {
       "id": 404700,
@@ -717,7 +753,7 @@
       "skillName": "Demise Privilege C",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4047003.png"
+      "faceUrl": ""
     },
     {
       "id": 105200,
@@ -729,7 +765,7 @@
       "skillName": "Holy Knight Emperor EX",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1052003.png"
+      "faceUrl": ""
     },
     {
       "id": 404800,
@@ -741,7 +777,7 @@
       "skillName": "Svabhāva B",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4048003.png"
+      "faceUrl": ""
     },
     {
       "id": 204600,
@@ -753,7 +789,19 @@
       "skillName": "Indomitable Bowmanship B",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2046003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 704400,
+      "collectionNo": 362,
+      "name": "Sen-no-Rikyu",
+      "rarity": 5,
+      "className": "berserker",
+      "chargePercent": 30,
+      "skillName": "A Lone Flower B",
+      "skillNum": 2,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 604600,
@@ -765,7 +813,7 @@
       "skillName": "Sensitive Mentality EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6046003.png"
+      "faceUrl": ""
     },
     {
       "id": 305300,
@@ -777,7 +825,7 @@
       "skillName": "Tam Lin (Fairy Country) C",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3053003.png"
+      "faceUrl": ""
     },
     {
       "id": 1001500,
@@ -789,7 +837,7 @@
       "skillName": "Malicious Feast A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_10015003.png"
+      "faceUrl": ""
     },
     {
       "id": 901600,
@@ -801,7 +849,7 @@
       "skillName": "Shunned Procession C",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_9016003.png"
+      "faceUrl": ""
     },
     {
       "id": 204700,
@@ -813,7 +861,7 @@
       "skillName": "The Yamato Spirit Lives On A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2047003.png"
+      "faceUrl": ""
     },
     {
       "id": 604900,
@@ -825,7 +873,7 @@
       "skillName": "Illusionary Techniques (Gejutsu) EX",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6049003.png"
+      "faceUrl": ""
     },
     {
       "id": 305400,
@@ -837,7 +885,7 @@
       "skillName": "Vāsuki's Elixir A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3054003.png"
+      "faceUrl": ""
     },
     {
       "id": 2501300,
@@ -849,7 +897,7 @@
       "skillName": "Watcher of the Water Stars A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_25013003.png"
+      "faceUrl": ""
     },
     {
       "id": 205000,
@@ -861,7 +909,7 @@
       "skillName": "Connection to Wisdom EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2050003.png"
+      "faceUrl": ""
     },
     {
       "id": 105900,
@@ -873,7 +921,7 @@
       "skillName": "Blood-Soaked Prince EX",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1059003.png"
+      "faceUrl": ""
     },
     {
       "id": 405500,
@@ -885,7 +933,7 @@
       "skillName": "Daughter of Cassiopeia A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4055003.png"
+      "faceUrl": ""
     },
     {
       "id": 1101300,
@@ -897,7 +945,7 @@
       "skillName": "Bloodstained Necklace B+",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11013003.png"
+      "faceUrl": ""
     },
     {
       "id": 1001700,
@@ -909,7 +957,7 @@
       "skillName": "Gate of Wadatsumi A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_10017003.png"
+      "faceUrl": ""
     },
     {
       "id": 205300,
@@ -921,7 +969,7 @@
       "skillName": "掃滅のアマルナ EX",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2053003.png"
+      "faceUrl": ""
     },
     {
       "id": 2800900,
@@ -932,8 +980,8 @@
       "chargePercent": 30,
       "skillName": "アース・ハートリズム A",
       "skillNum": 1,
-      "targetType": "ptAll",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_28009003.png"
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 106100,
@@ -945,7 +993,7 @@
       "skillName": "Excalibur D~A+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1061003.png"
+      "faceUrl": ""
     },
     {
       "id": 305700,
@@ -957,7 +1005,7 @@
       "skillName": "紋章の蛇 EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3057003.png"
+      "faceUrl": ""
     },
     {
       "id": 2801100,
@@ -969,7 +1017,7 @@
       "skillName": "罪なるかな。咎なるかな。悪なるかな EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_28011003.png"
+      "faceUrl": ""
     },
     {
       "id": 4000100,
@@ -980,8 +1028,8 @@
       "chargePercent": 30,
       "skillName": "アトミックプラント B",
       "skillNum": 2,
-      "targetType": "ptAll",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_40001003.png"
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 605100,
@@ -993,7 +1041,7 @@
       "skillName": "蝮蛇の眼 B",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6051003.png"
+      "faceUrl": ""
     },
     {
       "id": 106400,
@@ -1004,8 +1052,8 @@
       "chargePercent": 30,
       "skillName": "至誠 EX",
       "skillNum": 3,
-      "targetType": "ptAll",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1064003.png"
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 306200,
@@ -1017,7 +1065,7 @@
       "skillName": "エリザ粒子 A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3062003.png"
+      "faceUrl": ""
     },
     {
       "id": 505900,
@@ -1029,7 +1077,7 @@
       "skillName": "白き稀犬 A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5059003.png"
+      "faceUrl": ""
     },
     {
       "id": 106600,
@@ -1041,7 +1089,7 @@
       "skillName": "喜捨の勧め A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1066003.png"
+      "faceUrl": ""
     },
     {
       "id": 505600,
@@ -1052,8 +1100,8 @@
       "chargePercent": 30,
       "skillName": "精霊の弟子 B",
       "skillNum": 2,
-      "targetType": "ptAll",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5056003.png"
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 1102000,
@@ -1062,10 +1110,10 @@
       "rarity": 5,
       "className": "avenger",
       "chargePercent": 30,
-      "skillName": "偽神転生 B",
-      "skillNum": 3,
-      "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11020003.png"
+      "skillName": "欠地王の矜恃 A",
+      "skillNum": 2,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 100500,
@@ -1077,7 +1125,7 @@
       "skillName": "Chalice of Wealth B",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1005003.png"
+      "faceUrl": ""
     },
     {
       "id": 100800,
@@ -1089,7 +1137,7 @@
       "skillName": "Avaricious Gold A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1008003.png"
+      "faceUrl": ""
     },
     {
       "id": 300500,
@@ -1101,7 +1149,7 @@
       "skillName": "熱血のアンコール A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3005003.png"
+      "faceUrl": ""
     },
     {
       "id": 401900,
@@ -1113,7 +1161,7 @@
       "skillName": "タラスコンの聖女 EX",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4019003.png"
+      "faceUrl": ""
     },
     {
       "id": 502600,
@@ -1125,7 +1173,7 @@
       "skillName": "Halloween Encore! A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5026003.png"
+      "faceUrl": ""
     },
     {
       "id": 301100,
@@ -1137,7 +1185,7 @@
       "skillName": "Uninhibited Resplendence A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3011003.png"
+      "faceUrl": ""
     },
     {
       "id": 602300,
@@ -1149,7 +1197,7 @@
       "skillName": "Yin-Yang B",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6023003.png"
+      "faceUrl": ""
     },
     {
       "id": 502300,
@@ -1161,7 +1209,7 @@
       "skillName": "Mahatma A++",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5023003.png"
+      "faceUrl": ""
     },
     {
       "id": 101900,
@@ -1173,7 +1221,7 @@
       "skillName": "Dreams of Reunion EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1019003.png"
+      "faceUrl": ""
     },
     {
       "id": 102000,
@@ -1185,7 +1233,7 @@
       "skillName": "Knight of the Lake A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1020003.png"
+      "faceUrl": ""
     },
     {
       "id": 202500,
@@ -1197,7 +1245,7 @@
       "skillName": "Treasure Hunt (Sea) A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2025003.png"
+      "faceUrl": ""
     },
     {
       "id": 402400,
@@ -1209,7 +1257,7 @@
       "skillName": "Endless Summer B",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4024003.png"
+      "faceUrl": ""
     },
     {
       "id": 602400,
@@ -1221,7 +1269,7 @@
       "skillName": "Beach Climax EX",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6024003.png"
+      "faceUrl": ""
     },
     {
       "id": 900400,
@@ -1233,7 +1281,7 @@
       "skillName": "Saint of the Shore B+",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_9004003.png"
+      "faceUrl": ""
     },
     {
       "id": 501800,
@@ -1245,7 +1293,7 @@
       "skillName": "King's Return EX",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5018003.png"
+      "faceUrl": ""
     },
     {
       "id": 302700,
@@ -1257,7 +1305,7 @@
       "skillName": "White Flower Crown EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3027003.png"
+      "faceUrl": ""
     },
     {
       "id": 1100400,
@@ -1269,7 +1317,7 @@
       "skillName": "変転の魔 B++",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11004003.png"
+      "faceUrl": ""
     },
     {
       "id": 201600,
@@ -1281,7 +1329,7 @@
       "skillName": "Circuit Connect (Illegal) B+",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2016003.png"
+      "faceUrl": ""
     },
     {
       "id": 702700,
@@ -1293,7 +1341,7 @@
       "skillName": "アマゾネスの女王 A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_7027003.png"
+      "faceUrl": ""
     },
     {
       "id": 402600,
@@ -1305,7 +1353,19 @@
       "skillName": "Summer Breaker! A+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4026003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 303000,
+      "collectionNo": 183,
+      "name": "Pārvatī",
+      "rarity": 4,
+      "className": "lancer",
+      "chargePercent": 30,
+      "skillName": "女神の恩恵 EX",
+      "skillNum": 3,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 202100,
@@ -1317,7 +1377,7 @@
       "skillName": "乱戦の心得 B++",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2021003.png"
+      "faceUrl": ""
     },
     {
       "id": 602900,
@@ -1329,7 +1389,7 @@
       "skillName": "Kougaryu A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6029003.png"
+      "faceUrl": ""
     },
     {
       "id": 503400,
@@ -1341,7 +1401,19 @@
       "skillName": "Queen's Incense A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5034003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 202200,
+      "collectionNo": 197,
+      "name": "Attila the San(ta)",
+      "rarity": 4,
+      "className": "archer",
+      "chargePercent": 30,
+      "skillName": "星者の贈り物 A",
+      "skillNum": 1,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 202900,
@@ -1353,7 +1425,7 @@
       "skillName": "Clairvoyance (Darkness) C++",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2029003.png"
+      "faceUrl": ""
     },
     {
       "id": 503800,
@@ -1365,7 +1437,7 @@
       "skillName": "Dead-Count Shapeshifter EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5038003.png"
+      "faceUrl": ""
     },
     {
       "id": 2500300,
@@ -1377,7 +1449,19 @@
       "skillName": "Justice of World's End A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_25003003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 103600,
+      "collectionNo": 227,
+      "name": "Prince of Lan Ling",
+      "rarity": 4,
+      "className": "saber",
+      "chargePercent": 30,
+      "skillName": "勢い破竹の如し B",
+      "skillNum": 2,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 303500,
@@ -1389,7 +1473,19 @@
       "skillName": "Vanquishing Ruffians A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3035003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 504100,
+      "collectionNo": 236,
+      "name": "Miyu Edelfelt",
+      "rarity": 4,
+      "className": "caster",
+      "chargePercent": 30,
+      "skillName": "God Child's Wish EX",
+      "skillNum": 3,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 203300,
@@ -1401,7 +1497,7 @@
       "skillName": "Mystic Gem of Mani B",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2033003.png"
+      "faceUrl": ""
     },
     {
       "id": 604000,
@@ -1413,7 +1509,7 @@
       "skillName": "Makoto Drive EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6040003.png"
+      "faceUrl": ""
     },
     {
       "id": 204200,
@@ -1425,7 +1521,19 @@
       "skillName": "Legal Shower! B++",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2042003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 604100,
+      "collectionNo": 304,
+      "name": "Kiichi Hogen",
+      "rarity": 4,
+      "className": "assassin",
+      "chargePercent": 30,
+      "skillName": "陰陽道（法） A+",
+      "skillNum": 2,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 204300,
@@ -1437,7 +1545,7 @@
       "skillName": "Blessed Scion EX",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2043003.png"
+      "faceUrl": ""
     },
     {
       "id": 504800,
@@ -1449,7 +1557,7 @@
       "skillName": "Stage Magician Angel EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5048003.png"
+      "faceUrl": ""
     },
     {
       "id": 404600,
@@ -1461,7 +1569,7 @@
       "skillName": "Glass Cinderella EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4046003.png"
+      "faceUrl": ""
     },
     {
       "id": 505000,
@@ -1473,7 +1581,7 @@
       "skillName": "Invitation from Santa Claus C+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5050003.png"
+      "faceUrl": ""
     },
     {
       "id": 1001200,
@@ -1485,7 +1593,7 @@
       "skillName": "Ominous God A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_10012003.png"
+      "faceUrl": ""
     },
     {
       "id": 504700,
@@ -1497,7 +1605,7 @@
       "skillName": "For All Living Things A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5047003.png"
+      "faceUrl": ""
     },
     {
       "id": 1101400,
@@ -1509,7 +1617,7 @@
       "skillName": "Boundary on the Underworld Path C",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11014003.png"
+      "faceUrl": ""
     },
     {
       "id": 105500,
@@ -1521,7 +1629,7 @@
       "skillName": "柳緑花紅 B",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1055003.png"
+      "faceUrl": ""
     },
     {
       "id": 901500,
@@ -1533,7 +1641,7 @@
       "skillName": "Oracle of Darkness B",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_9015003.png"
+      "faceUrl": ""
     },
     {
       "id": 2800500,
@@ -1545,7 +1653,7 @@
       "skillName": "Third Sun A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_28005003.png"
+      "faceUrl": ""
     },
     {
       "id": 405000,
@@ -1557,7 +1665,7 @@
       "skillName": "Summer Flag B",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4050003.png"
+      "faceUrl": ""
     },
     {
       "id": 2501200,
@@ -1568,8 +1676,8 @@
       "chargePercent": 30,
       "skillName": "Queen's Grave A",
       "skillNum": 1,
-      "targetType": "ptAll",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_25012003.png"
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 204900,
@@ -1581,7 +1689,7 @@
       "skillName": "Queen Keeper A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2049003.png"
+      "faceUrl": ""
     },
     {
       "id": 2800600,
@@ -1593,7 +1701,7 @@
       "skillName": "Successor of the Land of Rain EX",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_28006003.png"
+      "faceUrl": ""
     },
     {
       "id": 505400,
@@ -1605,7 +1713,7 @@
       "skillName": "Magecraft (Elemental) B+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5054003.png"
+      "faceUrl": ""
     },
     {
       "id": 106000,
@@ -1617,7 +1725,7 @@
       "skillName": "Crimson Codex B",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1060003.png"
+      "faceUrl": ""
     },
     {
       "id": 305500,
@@ -1629,7 +1737,7 @@
       "skillName": "Summer Belza Burko B",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3055003.png"
+      "faceUrl": ""
     },
     {
       "id": 1101900,
@@ -1641,7 +1749,7 @@
       "skillName": "Taoist Arts (Doll Manipulation) A+",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11019003.png"
+      "faceUrl": ""
     },
     {
       "id": 2300700,
@@ -1653,7 +1761,7 @@
       "skillName": "Ｃ³・パニッシュメント B+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_23007003.png"
+      "faceUrl": ""
     },
     {
       "id": 2300800,
@@ -1665,7 +1773,7 @@
       "skillName": "Ｃ³・パニッシュメント B+",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_23008003.png"
+      "faceUrl": ""
     },
     {
       "id": 305600,
@@ -1677,7 +1785,7 @@
       "skillName": "ポテトイーター C",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3056003.png"
+      "faceUrl": ""
     },
     {
       "id": 106200,
@@ -1689,7 +1797,7 @@
       "skillName": "黄金律（蛇＆体） B",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1062003.png"
+      "faceUrl": ""
     },
     {
       "id": 305800,
@@ -1701,7 +1809,7 @@
       "skillName": "転輪聖王 EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3058003.png"
+      "faceUrl": ""
     },
     {
       "id": 405800,
@@ -1713,7 +1821,7 @@
       "skillName": "令嬢応酬 B",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4058003.png"
+      "faceUrl": ""
     },
     {
       "id": 705200,
@@ -1725,7 +1833,7 @@
       "skillName": "連環馬（憑依） A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_7052003.png"
+      "faceUrl": ""
     },
     {
       "id": 306000,
@@ -1737,7 +1845,7 @@
       "skillName": "因習村の巫女 A+",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3060003.png"
+      "faceUrl": ""
     },
     {
       "id": 1001900,
@@ -1749,7 +1857,7 @@
       "skillName": "夏と自分に嘘はつけない B",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_10019003.png"
+      "faceUrl": ""
     },
     {
       "id": 1102100,
@@ -1761,7 +1869,7 @@
       "skillName": "砲術義肢 C",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11021003.png"
+      "faceUrl": ""
     },
     {
       "id": 1102200,
@@ -1773,7 +1881,19 @@
       "skillName": "シュラインメイデン・マーズ A+",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11022003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 605200,
+      "collectionNo": 463,
+      "name": "Hebi Nyōbō",
+      "rarity": 4,
+      "className": "assassin",
+      "chargePercent": 30,
+      "skillName": "三井の晩鐘 EX",
+      "skillNum": 3,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 1002000,
@@ -1785,7 +1905,7 @@
       "skillName": "孕りの花 A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_10020003.png"
+      "faceUrl": ""
     },
     {
       "id": 405600,
@@ -1797,7 +1917,7 @@
       "skillName": "月女神の巫女 A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4056003.png"
+      "faceUrl": ""
     },
     {
       "id": 200300,
@@ -1809,7 +1929,7 @@
       "skillName": "森の賢者 D",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2003003.png"
+      "faceUrl": ""
     },
     {
       "id": 502100,
@@ -1821,7 +1941,7 @@
       "skillName": "Primordial Rune",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_5021003.png"
+      "faceUrl": ""
     },
     {
       "id": 701100,
@@ -1833,7 +1953,7 @@
       "skillName": "神の門は閉ざされず A",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_7011003.png"
+      "faceUrl": ""
     },
     {
       "id": 600300,
@@ -1845,7 +1965,7 @@
       "skillName": "蔵知の司書 B",
       "skillNum": 1,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_6003003.png"
+      "faceUrl": ""
     },
     {
       "id": 101200,
@@ -1857,7 +1977,7 @@
       "skillName": "Calm and Collected B",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_1012003.png"
+      "faceUrl": ""
     },
     {
       "id": 402500,
@@ -1869,7 +1989,7 @@
       "skillName": "Unyielding Will C",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_4025003.png"
+      "faceUrl": ""
     },
     {
       "id": 301400,
@@ -1881,7 +2001,19 @@
       "skillName": "生死流転の武 A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_3014003.png"
+      "faceUrl": ""
+    },
+    {
+      "id": 1001400,
+      "collectionNo": 352,
+      "name": "Xu Fu",
+      "rarity": 3,
+      "className": "alterEgo",
+      "chargePercent": 30,
+      "skillName": "Legend of Xu Fu C",
+      "skillNum": 3,
+      "targetType": "party",
+      "faceUrl": ""
     },
     {
       "id": 201300,
@@ -1893,7 +2025,7 @@
       "skillName": "Arrow Construction A",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_2013003.png"
+      "faceUrl": ""
     },
     {
       "id": 700500,
@@ -1905,7 +2037,7 @@
       "skillName": "Unyielding Will A",
       "skillNum": 2,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_7005003.png"
+      "faceUrl": ""
     },
     {
       "id": 1100100,
@@ -1917,7 +2049,7 @@
       "skillName": "The End of the Fourth Night EX",
       "skillNum": 3,
       "targetType": "self",
-      "faceUrl": "https://static.atlasacademy.io/JP/Faces/f_11001003.png"
+      "faceUrl": ""
     }
   ]
 }
