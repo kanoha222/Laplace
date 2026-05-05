@@ -84,6 +84,7 @@ def _build_system_prompt() -> str:
     "name": "",
     "skillEffect": "invincible",
     "skillEffects": ["avoidance", "guts"],
+    "skillEffectsOp": "or",
     "targetType": "self",
     "traits": [300, 303],
     "excludeTraits": [1],
@@ -104,7 +105,8 @@ def _build_system_prompt() -> str:
   - `className`: 职阶名称（小写英文）。如果用户没提职阶，设为 null。支持的值：saber, archer, lancer, rider, caster, assassin, berserker, ruler, avenger, moonCancer, alterEgo, foreigner, pretender
   - `name`: 从者名称搜索关键词。如果用户没搜索特定从者，设为 null。
   - `skillEffect`: 单个技能效果名称。如果用户只查询一种效果，用此字段。设为 null 表示不筛选效果。
-  - `skillEffects`: 多个技能效果名称数组（AND 逻辑，必须同时拥有）。如果用户查询多种效果组合，用此字段。设为 null 表示不筛选。
+  - `skillEffects`: 多个技能效果名称数组。如果用户查询多种效果组合，用此字段。设为 null 表示不筛选。
+  - `skillEffectsOp`: 多效果的逻辑关系。可选 "and"（必须同时拥有所有效果）或 "or"（只要满足其中一个效果即可）。例如用户问“有无敌或回避技能”，设为 "or"。没提且只有一个效果设为 null。
   - `targetType`: 效果目标类型。可选 "self"（自身）、"party"（全体己方）、"enemy"（敌方）。设为 null 表示不筛选目标。
   - `traits`: 必须拥有的特性 ID 数组。常见：秩序=300, 混沌=301, 中立=302, 善=303, 恶=304, 中庸=305, 狂=306, 夏=308, 神性=2000, 人类=2001, 龙=2002, 罗马=2004, 猛兽=2005, 阿尔托莉雅脸=2007, 骑乘=2009, 亚瑟=2010, 死灵=1002, 魔兽=1004, 魔性=2019, 妖精=1177, 鬼=1132。例如秩序善就是 [300, 303]。没提设为 null。
   - `excludeTraits`: 不能拥有的特性 ID 数组。没提设为 null。
@@ -138,17 +140,17 @@ def _build_system_prompt() -> str:
 
 用户："有无敌技能的从者"
 ```json
-{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": "invincible", "skillEffects": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": null, "npTarget": null}}}}
+{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": "invincible", "skillEffects": null, "skillEffectsOp": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": null, "npTarget": null}}}}
 ```
 
 用户："秩序善，且 30自充以上的绿卡光炮从者有哪些"
 ```json
-{{"intent": "query_servants", "conditions": {{"npCharge": {{"op": "gte", "value": 30}}, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "targetType": null, "traits": [300, 303], "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": "quick", "npTarget": "all"}}}}
+{{"intent": "query_servants", "conditions": {{"npCharge": {{"op": "gte", "value": 30}}, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "skillEffectsOp": null, "targetType": null, "traits": [300, 303], "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": "quick", "npTarget": "all"}}}}
 ```
 
 用户："三红配卡的从者"
 ```json
-{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": {{"buster": 3}}, "npCard": null, "npTarget": null}}}}
+{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "skillEffectsOp": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": {{"buster": 3}}, "npCard": null, "npTarget": null}}}}
 ```
 
 请严格遵循以上格式，只输出 JSON，不要有任何多余文字。"""

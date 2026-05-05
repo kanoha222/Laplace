@@ -126,13 +126,26 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
         if not _match_effect(servant, skill_effect, target_type):
             return False
 
-    # 多效果组合筛选（AND 逻辑）
+    # 多效果组合筛选
     skill_effects = conditions.get("skillEffects")
     if skill_effects is not None and isinstance(skill_effects, list):
         target_type = conditions.get("targetType")
-        for effect in skill_effects:
-            if not _match_effect(servant, effect, target_type):
+        op = conditions.get("skillEffectsOp", "and").lower()
+        
+        if op == "or":
+            # 只要满足其中一个效果即可
+            matched = False
+            for effect in skill_effects:
+                if _match_effect(servant, effect, target_type):
+                    matched = True
+                    break
+            if not matched:
                 return False
+        else:
+            # 必须满足所有效果 (AND)
+            for effect in skill_effects:
+                if not _match_effect(servant, effect, target_type):
+                    return False
 
     # 特性筛选
     traits = conditions.get("traits")
