@@ -3,6 +3,7 @@ Laplace — Query Executor
 
 接收 LLM 解析出的 JSON 查询指令，
 在预加载的从者数据上执行筛选。
+支持效果类型、NP 充能、职阶、稀有度等多条件组合查询。
 """
 
 import json
@@ -20,7 +21,9 @@ def load_database() -> list[dict]:
     if _servants_db is None:
         with open(DATA_PATH, "r", encoding="utf-8") as f:
             _servants_db = json.load(f)
-        print(f"📦 从者数据库已加载: {len(_servants_db)} 条")
+        # 统计
+        has_effects = sum(1 for s in _servants_db if s.get("skillEffects"))
+        print(f"📦 从者数据库已加载: {len(_servants_db)} 条, {has_effects} 个有效果数据")
     return _servants_db
 
 
@@ -34,6 +37,9 @@ def execute_query(conditions: dict) -> list[dict]:
             - rarity: {"op": "eq"|"gte"|"lte"|"gt", "value": int} | None
             - className: str | None
             - name: str | None
+            - skillEffect: str | None  (单效果筛选)
+            - skillEffects: list[str] | None  (多效果 AND 筛选)
+            - targetType: str | None  ("self" | "party" | "enemy")
 
     Returns:
         匹配的从者列表
@@ -57,18 +63,12 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
     # NP 充能条件
     np_cond = conditions.get("npCharge")
     if np_cond is not None:
-        # 使用 maxSelfCharge（最大自充值，包含 self 类型）
-        # 以及 maxPartyCharge（全体充能值）
-        # 总可用自充 = max(自充) + max(全体充)
         charge = servant.get("totalSelfCharge", 0)
-        # 如果没有充能能力，直接不匹配
         if not servant.get("hasNpCharge", False):
             return False
-        # 对于精确匹配，检查是否有任何一个技能的充能等于目标值
         op = np_cond.get("op", "eq")
         value = np_cond.get("value", 0)
         if op == "eq":
-            # 精确匹配：检查是否有任何一个技能充能等于目标值
             has_exact = any(
                 c["chargePercent"] == value
                 for c in servant.get("npCharges", [])
@@ -105,6 +105,49 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
     if name is not None:
         if name.lower() not in servant.get("name", "").lower():
             return False
+
+    # 单效果筛选
+    skill_effect = conditions.get("skillEffect")
+    if skill_effect is not None:
+        target_type = conditions.get("targetType")
+        if not _match_effect(servant, skill_effect, target_type):
+            return False
+
+    # 多效果组合筛选（AND 逻辑）
+    skill_effects = conditions.get("skillEffects")
+    if skill_effects is not None and isinstance(skill_effects, list):
+        target_type = conditions.get("targetType")
+        for effect in skill_effects:
+            if not _match_effect(servant, effect, target_type):
+                return False
+
+    return True
+
+
+def _match_effect(
+    servant: dict, effect_name: str, target_type: str | None = None
+) -> bool:
+    """
+    检查从者是否拥有特定效果。
+
+    Args:
+        servant: 从者数据
+        effect_name: 效果名（如 "invincible"）
+        target_type: 目标类型筛选（如 "party"），None 表示不限
+    """
+    # 快速路径：先检查 skillEffects 集合
+    servant_effects = servant.get("skillEffects", [])
+    if effect_name not in servant_effects:
+        return False
+
+    # 如果需要按目标类型筛选，检查详细数据
+    if target_type is not None:
+        for skill in servant.get("skillDetails", []):
+            for eff in skill.get("effects", []):
+                if eff.get("type") == effect_name:
+                    if eff.get("targetType") == target_type:
+                        return True
+        return False
 
     return True
 

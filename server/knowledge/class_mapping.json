@@ -1,0 +1,478 @@
+{
+  "enumName": "SvtClass",
+  "source": "common.dart",
+  "totalCount": 78,
+  "playableCount": 14,
+  "playable": [
+    {
+      "name": "saber",
+      "value": 1,
+      "label": "剣"
+    },
+    {
+      "name": "archer",
+      "value": 2,
+      "label": "弓"
+    },
+    {
+      "name": "lancer",
+      "value": 3,
+      "label": "槍"
+    },
+    {
+      "name": "rider",
+      "value": 4,
+      "label": "騎"
+    },
+    {
+      "name": "caster",
+      "value": 5,
+      "label": "術"
+    },
+    {
+      "name": "assassin",
+      "value": 6,
+      "label": "殺"
+    },
+    {
+      "name": "berserker",
+      "value": 7,
+      "label": "狂"
+    },
+    {
+      "name": "shielder",
+      "value": 8,
+      "label": "盾"
+    },
+    {
+      "name": "ruler",
+      "value": 9,
+      "label": "裁"
+    },
+    {
+      "name": "alterego",
+      "value": 10,
+      "label": "AE"
+    },
+    {
+      "name": "avenger",
+      "value": 11,
+      "label": "讐"
+    },
+    {
+      "name": "moonCancer",
+      "value": 23,
+      "label": "月"
+    },
+    {
+      "name": "foreigner",
+      "value": 25,
+      "label": "降"
+    },
+    {
+      "name": "pretender",
+      "value": 28,
+      "label": "偽"
+    }
+  ],
+  "all": [
+    {
+      "name": "none",
+      "value": 0
+    },
+    {
+      "name": "saber",
+      "value": 1,
+      "label": "剣"
+    },
+    {
+      "name": "archer",
+      "value": 2,
+      "label": "弓"
+    },
+    {
+      "name": "lancer",
+      "value": 3,
+      "label": "槍"
+    },
+    {
+      "name": "rider",
+      "value": 4,
+      "label": "騎"
+    },
+    {
+      "name": "caster",
+      "value": 5,
+      "label": "術"
+    },
+    {
+      "name": "assassin",
+      "value": 6,
+      "label": "殺"
+    },
+    {
+      "name": "berserker",
+      "value": 7,
+      "label": "狂"
+    },
+    {
+      "name": "shielder",
+      "value": 8,
+      "label": "盾"
+    },
+    {
+      "name": "ruler",
+      "value": 9,
+      "label": "裁"
+    },
+    {
+      "name": "alterego",
+      "value": 10,
+      "label": "AE"
+    },
+    {
+      "name": "avenger",
+      "value": 11,
+      "label": "讐"
+    },
+    {
+      "name": "demonGodPillar",
+      "value": 12
+    },
+    {
+      "name": "loreGrandSaber",
+      "value": 13,
+      "label": "剣",
+      "baseClassId": 1
+    },
+    {
+      "name": "loreGrandArcher",
+      "value": 14,
+      "label": "弓",
+      "baseClassId": 2
+    },
+    {
+      "name": "loreGrandLancer",
+      "value": 15,
+      "label": "槍",
+      "baseClassId": 3
+    },
+    {
+      "name": "loreGrandRider",
+      "value": 16,
+      "label": "騎",
+      "baseClassId": 4
+    },
+    {
+      "name": "loreGrandCaster",
+      "value": 17,
+      "label": "術",
+      "baseClassId": 5
+    },
+    {
+      "name": "loreGrandAssassin",
+      "value": 18,
+      "label": "殺",
+      "baseClassId": 6
+    },
+    {
+      "name": "loreGrandBerserker",
+      "value": 19,
+      "label": "狂",
+      "baseClassId": 7
+    },
+    {
+      "name": "beastII",
+      "value": 20,
+      "label": "兽Ⅱ"
+    },
+    {
+      "name": "ushiChaosTide",
+      "value": 21
+    },
+    {
+      "name": "beastI",
+      "value": 22,
+      "label": "獸I"
+    },
+    {
+      "name": "moonCancer",
+      "value": 23,
+      "label": "月"
+    },
+    {
+      "name": "beastIIIR",
+      "value": 24,
+      "label": "獸ⅢR"
+    },
+    {
+      "name": "foreigner",
+      "value": 25,
+      "label": "降"
+    },
+    {
+      "name": "beastIIIL",
+      "value": 26,
+      "label": "獸ⅢL"
+    },
+    {
+      "name": "beastUnknown",
+      "value": 27,
+      "label": "獸?"
+    },
+    {
+      "name": "pretender",
+      "value": 28,
+      "label": "偽"
+    },
+    {
+      "name": "beastIV",
+      "value": 29,
+      "label": "獸Ⅳ"
+    },
+    {
+      "name": "beastILost",
+      "value": 30,
+      "label": "獸I?"
+    },
+    {
+      "name": "uOlgaMarieAlienGod",
+      "value": 31,
+      "label": "獸?"
+    },
+    {
+      "name": "uOlgaMarie",
+      "value": 32,
+      "label": "?"
+    },
+    {
+      "name": "beastDoraco",
+      "value": 33,
+      "label": "獸"
+    },
+    {
+      "name": "beastVI",
+      "value": 34,
+      "label": "獸Ⅵ"
+    },
+    {
+      "name": "beastVIBoss",
+      "value": 35,
+      "label": "獸Ⅵ"
+    },
+    {
+      "name": "uOlgaMarieFlare",
+      "value": 36
+    },
+    {
+      "name": "uOlgaMarieAqua",
+      "value": 37
+    },
+    {
+      "name": "beastEresh",
+      "value": 38,
+      "label": "獸"
+    },
+    {
+      "name": "uOlgaMarieGrand",
+      "value": 39
+    },
+    {
+      "name": "unBeastOlgaMarie",
+      "value": 40,
+      "label": "UnBeast"
+    },
+    {
+      "name": "uOlgaMarieStellar",
+      "value": 41
+    },
+    {
+      "name": "beastVIIUnknown",
+      "value": 42
+    },
+    {
+      "name": "beastVII",
+      "value": 43,
+      "label": "獸Ⅶ"
+    },
+    {
+      "name": "aquaFragment",
+      "value": 96
+    },
+    {
+      "name": "unknown",
+      "value": 97
+    },
+    {
+      "name": "agarthaPenth",
+      "value": 107
+    },
+    {
+      "name": "cccFinaleEmiyaAlter",
+      "value": 124
+    },
+    {
+      "name": "salemAbby",
+      "value": 125
+    },
+    {
+      "name": "OTHER",
+      "value": 1000,
+      "label": "OTHER"
+    },
+    {
+      "name": "ALL",
+      "value": 1001,
+      "label": "ALL"
+    },
+    {
+      "name": "EXTRA",
+      "value": 1002,
+      "label": "EXTRA"
+    },
+    {
+      "name": "MIX",
+      "value": 1003,
+      "label": "MIX"
+    },
+    {
+      "name": "EXTRA1",
+      "value": 1004,
+      "label": "EXTRA1"
+    },
+    {
+      "name": "EXTRA2",
+      "value": 1005,
+      "label": "EXTRA2"
+    },
+    {
+      "name": "uOlgaMarieFlareCollection",
+      "value": 9001
+    },
+    {
+      "name": "uOlgaMarieAquaCollection",
+      "value": 9002
+    },
+    {
+      "name": "uOlgaMarieGrandCollection",
+      "value": 9003
+    },
+    {
+      "name": "uOlgaMarieStellarCollection",
+      "value": 9004
+    },
+    {
+      "name": "grandSaber",
+      "value": 10001,
+      "label": "剣",
+      "baseClassId": 1
+    },
+    {
+      "name": "grandArcher",
+      "value": 10002,
+      "label": "弓",
+      "baseClassId": 2
+    },
+    {
+      "name": "grandLancer",
+      "value": 10003,
+      "label": "槍",
+      "baseClassId": 3
+    },
+    {
+      "name": "grandRider",
+      "value": 10004,
+      "label": "騎",
+      "baseClassId": 4
+    },
+    {
+      "name": "grandCaster",
+      "value": 10005,
+      "label": "術",
+      "baseClassId": 5
+    },
+    {
+      "name": "grandAssassin",
+      "value": 10006,
+      "label": "殺",
+      "baseClassId": 6
+    },
+    {
+      "name": "grandBerserker",
+      "value": 10007,
+      "label": "狂",
+      "baseClassId": 7
+    },
+    {
+      "name": "grandShielder",
+      "value": 10008,
+      "label": "盾",
+      "baseClassId": 8
+    },
+    {
+      "name": "grandRuler",
+      "value": 10009,
+      "label": "裁",
+      "baseClassId": 9
+    },
+    {
+      "name": "grandAlterego",
+      "value": 10010,
+      "label": "AE",
+      "baseClassId": 10
+    },
+    {
+      "name": "grandAvenger",
+      "value": 10011,
+      "label": "讐",
+      "baseClassId": 11
+    },
+    {
+      "name": "grandMoonCancer",
+      "value": 10023,
+      "label": "月",
+      "baseClassId": 23
+    },
+    {
+      "name": "grandForeigner",
+      "value": 10025,
+      "label": "降",
+      "baseClassId": 25
+    },
+    {
+      "name": "grandPretender",
+      "value": 10028,
+      "label": "偽",
+      "baseClassId": 28
+    },
+    {
+      "name": "grandUnBeastUOlgaMarieAlienGod",
+      "value": 10031,
+      "label": "UnBeast",
+      "baseClassId": 31
+    },
+    {
+      "name": "grandUnBeastDraco",
+      "value": 10033,
+      "label": "UnBeast",
+      "baseClassId": 33
+    },
+    {
+      "name": "grandUnBeastEresh",
+      "value": 10038,
+      "label": "UnBeast",
+      "baseClassId": 38
+    },
+    {
+      "name": "grandUnBeastUOlgaMarie",
+      "value": 10040,
+      "label": "UnBeast",
+      "baseClassId": 40
+    },
+    {
+      "name": "beastAny",
+      "value": 33,
+      "label": "獸"
+    }
+  ]
+}

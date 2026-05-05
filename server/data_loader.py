@@ -3,7 +3,7 @@
 Laplace — 通用从者数据加载器
 
 从 Atlas Academy API 拉取全量从者数据，
-提取所有技能中的 NP 充能信息（不限定阈值），
+基于 effect_schema.json 知识库提取所有技能效果，
 生成通用数据库供 Query Executor 使用。
 """
 
@@ -20,6 +20,7 @@ except ImportError:
 API_BASE = "https://api.atlasacademy.io"
 NICE_SERVANT_URL = f"{API_BASE}/export/JP/nice_servant_lang_en.json"
 OUTPUT_DIR = Path(__file__).parent / "data"
+KNOWLEDGE_DIR = Path(__file__).parent / "knowledge"
 
 # NP 充能相关的 funcType
 GAIN_NP_FUNC_TYPES = {"gainNp"}
@@ -33,6 +34,48 @@ ALL_SELF_TARGETS = SELF_TARGET_TYPES | PARTY_TARGET_TYPES
 
 SKILL_LV10_INDEX = 9
 
+
+# ============================================================
+# 知识库加载
+# ============================================================
+
+def load_effect_schema() -> list[dict]:
+    """加载 effect_schema.json 知识库。"""
+    schema_path = KNOWLEDGE_DIR / "effect_schema.json"
+    if not schema_path.exists():
+        print("⚠️  effect_schema.json 不存在，请先运行 sync_chaldea.py")
+        return []
+    with open(schema_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return data.get("effects", [])
+
+
+def build_effect_matcher(effects: list[dict]) -> dict:
+    """
+    构建效果匹配索引。
+
+    Returns:
+        {
+            "funcType": {"gainNp": ["gainNp"], "gainStar": ["gainStar"], ...},
+            "buffType": {"upAtk": ["upAtk"], "invincible": ["invincible"], ...},
+        }
+    """
+    func_index: dict[str, list[str]] = {}
+    buff_index: dict[str, list[str]] = {}
+
+    for effect in effects:
+        name = effect["name"]
+        for ft in effect.get("funcTypes", []):
+            func_index.setdefault(ft, []).append(name)
+        for bt in effect.get("buffTypes", []):
+            buff_index.setdefault(bt, []).append(name)
+
+    return {"funcType": func_index, "buffType": buff_index}
+
+
+# ============================================================
+# 数据提取
+# ============================================================
 
 def fetch_servants() -> list[dict]:
     """从 Atlas Academy API 拉取全量从者数据。"""
@@ -83,17 +126,78 @@ def extract_np_charges(servant: dict) -> list[dict]:
     return charges
 
 
-def build_database(servants: list[dict]) -> list[dict]:
+def classify_target_type(func_target_type: str) -> str:
+    """将 FuncTargetType 分类为简单的目标类型。"""
+    if func_target_type in ("self", "commandTypeSelfTreasureDevice"):
+        return "self"
+    if func_target_type.startswith("pt") or func_target_type == "fieldAll":
+        return "party"
+    if func_target_type.startswith("enemy"):
+        return "enemy"
+    return "other"
+
+
+def extract_skill_effects(
+    servant: dict, matcher: dict
+) -> tuple[set[str], list[dict]]:
+    """
+    提取从者所有技能中的全部效果。
+
+    Returns:
+        (效果集合, 技能详情列表)
+    """
+    all_effects: set[str] = set()
+    skill_details: list[dict] = []
+
+    for skill in servant.get("skills", []):
+        if skill.get("type") != "active":
+            continue
+
+        skill_effects: list[dict] = []
+        for func in skill.get("functions", []):
+            func_type = func.get("funcType", "")
+            target_type = func.get("funcTargetType", "")
+
+            # 通过 funcType 匹配效果
+            matched_effects = set(matcher["funcType"].get(func_type, []))
+
+            # 通过 buffType 匹配效果（addState 系列函数）
+            for buff in func.get("buffs", []):
+                buff_type = buff.get("type", "")
+                matched_effects.update(matcher["buffType"].get(buff_type, []))
+
+            for effect_name in matched_effects:
+                all_effects.add(effect_name)
+                skill_effects.append({
+                    "type": effect_name,
+                    "funcType": func_type,
+                    "targetType": classify_target_type(target_type),
+                })
+
+        if skill_effects:
+            skill_details.append({
+                "skillName": skill.get("name", ""),
+                "skillNum": skill.get("num", 0),
+                "effects": skill_effects,
+            })
+
+    return all_effects, skill_details
+
+
+def build_database(servants: list[dict], matcher: dict) -> list[dict]:
     """构建通用从者数据库。"""
     db = []
+    total_with_effects = 0
+
     for svt in servants:
         charges = extract_np_charges(svt)
-        # 计算最大自充百分比
+        skill_effects, skill_details = extract_skill_effects(svt, matcher)
+
+        # 计算 NP 充能统计
         self_charges = [c["chargePercent"] for c in charges if c["targetType"] == "self"]
         party_charges = [c["chargePercent"] for c in charges if c["targetType"] == "party"]
         max_self_charge = max(self_charges) if self_charges else 0
         max_party_charge = max(party_charges) if party_charges else 0
-        # 总自充 = 自充 + 全体充（全体充也给自己）
         total_self_charge = sum(self_charges) + sum(party_charges)
 
         entry = {
@@ -103,26 +207,43 @@ def build_database(servants: list[dict]) -> list[dict]:
             "rarity": svt.get("rarity", 0),
             "className": svt.get("className", "unknown"),
             "faceUrl": get_face_url(svt),
+            # NP 充能数据（向后兼容）
             "npCharges": charges,
             "maxSelfCharge": max_self_charge,
             "maxPartyCharge": max_party_charge,
             "totalSelfCharge": total_self_charge,
             "hasNpCharge": len(charges) > 0,
+            # 全效果数据（Phase 2 新增）
+            "skillEffects": sorted(skill_effects),
+            "skillDetails": skill_details,
         }
         db.append(entry)
+        if skill_effects:
+            total_with_effects += 1
 
     print(f"   ✅ 构建数据库: {len(db)} 个从者, "
-          f"{sum(1 for s in db if s['hasNpCharge'])} 个有自充")
+          f"{sum(1 for s in db if s['hasNpCharge'])} 个有自充, "
+          f"{total_with_effects} 个有效果数据")
     return db
 
 
 def main():
     print("=" * 50)
-    print("🔮 Laplace — Data Loader")
+    print("🔮 Laplace — Data Loader v2.0")
     print("=" * 50)
 
+    # 加载效果知识库
+    print("\n📚 加载效果知识库...")
+    effects = load_effect_schema()
+    if effects:
+        matcher = build_effect_matcher(effects)
+        print(f"   ✅ 加载 {len(effects)} 个效果分类")
+    else:
+        matcher = {"funcType": {}, "buffType": {}}
+        print("   ⚠️  无效果知识库，仅提取 NP 充能数据")
+
     servants = fetch_servants()
-    db = build_database(servants)
+    db = build_database(servants, matcher)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     output_path = OUTPUT_DIR / "servants_db.json"
