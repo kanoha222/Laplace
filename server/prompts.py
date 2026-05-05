@@ -75,6 +75,12 @@ def _build_system_prompt() -> str:
 - 当用户使用社区常见昵称、缩写或别名时，`conditions.name` 优先保留用户原文，不要擅自改写成你猜测的正式名称。
 - 例如：`C呆`、`水C呆`、`术呆`、`小教授`、`呆毛` 这类名称，应直接放入 `name` 字段，由后端昵称表做最终解析。
 
+## 多从者对比
+- 当用户要求**对比**、**比较**多个从者时（如"对比千子村正和大和武尊"），请使用 `names` 字段（数组），而非 `name` 字段。
+- 例如："对比千子村正和大和武尊" → `{{"names": ["千子村正", "大和武尊"]}}`
+- 例如："比较呆毛、村正、武尊三个从者" → `{{"names": ["呆毛", "村正", "武尊"]}}`
+- `names` 和 `name` 不要同时使用。多从者用 `names`，单从者用 `name`。
+
 ## 输出格式要求
 你必须严格按以下 JSON 格式回复，不要输出任何其他内容：
 
@@ -154,7 +160,12 @@ def _build_system_prompt() -> str:
 
 用户："三红配卡的从者"
 ```json
-{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "skillEffectsOp": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": {{"buster": 3}}, "npCard": null, "npTarget": null}}}}
+{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "names": null, "skillEffect": null, "skillEffects": null, "skillEffectsOp": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": {{"buster": 3}}, "npCard": null, "npTarget": null}}}}
+```
+
+用户："对比千子村正和大和武尊"
+```json
+{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "names": ["千子村正", "大和武尊"], "skillEffect": null, "skillEffects": null, "skillEffectsOp": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": null, "npTarget": null}}}}
 ```
 
 请严格遵循以上格式，只输出 JSON，不要有任何多余文字。"""

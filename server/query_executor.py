@@ -59,7 +59,8 @@ def execute_query(conditions: dict) -> list[dict]:
             - npCharge: {"op": "eq"|"gte"|"lte"|"gt", "value": int} | None
             - rarity: {"op": "eq"|"gte"|"lte"|"gt", "value": int} | None
             - className: str | None
-            - name: str | None
+            - name: str | None  (单从者查询，向后兼容)
+            - names: list[str] | None  (多从者对比，新增)
             - skillEffect: str | None  (单效果筛选)
             - skillEffects: list[str] | None  (多效果 AND 筛选)
             - targetType: str | None  ("self" | "party" | "enemy")
@@ -75,8 +76,36 @@ def execute_query(conditions: dict) -> list[dict]:
         匹配的从者列表
     """
     db = load_database()
+    
+    # 检查是否为多从者对比查询
+    names = conditions.get("names")
+    if names and isinstance(names, list) and len(names) > 0:
+        # 多从者对比：分别查询每个从者，合并结果
+        all_results = []
+        for name in names:
+            # 为每个名称创建单独的查询条件
+            single_conditions = {k: v for k, v in conditions.items() if k != "names"}
+            single_conditions["name"] = name
+            
+            for servant in db:
+                if _match_servant(servant, single_conditions):
+                    all_results.append(servant)
+                    break  # 找到匹配的第一个从者即可
+        
+        # 去重（按 ID）
+        seen_ids = set()
+        unique_results = []
+        for svt in all_results:
+            if svt["id"] not in seen_ids:
+                seen_ids.add(svt["id"])
+                unique_results.append(svt)
+        
+        # 按稀有度降序 → collectionNo 升序排序
+        unique_results.sort(key=lambda x: (-x["rarity"], x["collectionNo"]))
+        return unique_results
+    
+    # 单从者查询或多条件筛选（原有逻辑）
     results = []
-
     for servant in db:
         if not _match_servant(servant, conditions):
             continue
@@ -131,10 +160,11 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
             return False
 
     # 名称搜索（支持英文、日文和中文翻译，以及昵称映射）
+    # 分级匹配：精确 → 子串模糊 → 昵称映射
     name = conditions.get("name")
     if name is not None and isinstance(name, str) and name.strip():
-        query_name = name.strip().lower()
-        normalized_query_name = _normalize_text(name)
+        query_name = name.strip()
+        normalized_query_name = _normalize_text(query_name)
         
         # 尝试昵称转换
         nicknames = load_nicknames()
@@ -170,25 +200,33 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
         normalized_cn_name = _normalize_text(cn_name)
         normalized_jp_name = _normalize_text(jp_name)
         
-        # 如果有映射名，检查映射后的名字或原始输入名字是否匹配
+        # 分级匹配策略
+        name_matched = False
+        
+        # 阶段 1: 精确匹配（有映射名时优先检查映射）
         if mapped_name:
             normalized_mapped_name = _normalize_text(mapped_name)
-            if (
-                (normalized_mapped_name != normalized_en_name)
-                and (normalized_mapped_name != normalized_cn_name)
-                and (normalized_mapped_name != normalized_jp_name)
-                and (normalized_query_name not in normalized_en_name)
-                and (normalized_query_name not in normalized_cn_name)
-                and (normalized_query_name not in normalized_jp_name)
-            ):
-                return False
-        else:
-            if (
-                (normalized_query_name not in normalized_en_name)
-                and (normalized_query_name not in normalized_cn_name)
-                and (normalized_query_name not in normalized_jp_name)
-            ):
-                return False
+            if (normalized_mapped_name == normalized_en_name or
+                normalized_mapped_name == normalized_cn_name or
+                normalized_mapped_name == normalized_jp_name):
+                name_matched = True
+        
+        # 阶段 2: 子串模糊匹配（"武尊" in "大和武尊"）
+        if not name_matched and len(normalized_query_name) >= 2:
+            if (normalized_query_name in normalized_en_name or
+                normalized_query_name in normalized_cn_name or
+                normalized_query_name in normalized_jp_name):
+                name_matched = True
+        
+        # 阶段 3: 反向子串匹配（"大和武尊" in "武尊" 不可能，但处理特殊情况）
+        if not name_matched:
+            if (normalized_en_name and normalized_en_name in normalized_query_name) or \
+               (normalized_cn_name and normalized_cn_name in normalized_query_name) or \
+               (normalized_jp_name and normalized_jp_name in normalized_query_name):
+                name_matched = True
+        
+        if not name_matched:
+            return False
 
     # 单效果筛选
     skill_effect = conditions.get("skillEffect")

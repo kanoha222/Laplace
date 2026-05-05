@@ -30,7 +30,8 @@ class QueryConditions(BaseModel):
     npCharge: NumericCondition | None = None
     rarity: NumericCondition | None = None
     className: str | None = None
-    name: str | None = None
+    name: str | None = None  # 单从者查询（向后兼容）
+    names: list[str] | None = None  # 多从者对比（新增）
     skillEffect: str | None = None
     skillEffects: list[str] | None = None
     skillEffectsOp: Literal["and", "or"] | None = None
@@ -48,6 +49,16 @@ class QueryConditions(BaseModel):
     def _blank_to_none(cls, value: object) -> object:
         if isinstance(value, str) and not value.strip():
             return None
+        return value
+
+    @field_validator("names", mode="before")
+    @classmethod
+    def _validate_names(cls, value: object) -> object:
+        """确保 names 列表不为空。"""
+        if isinstance(value, list):
+            # 过滤空字符串
+            cleaned = [n.strip() for n in value if isinstance(n, str) and n.strip()]
+            return cleaned if cleaned else None
         return value
 
     @field_validator("skillEffects", "traits", "excludeTraits", mode="before")
