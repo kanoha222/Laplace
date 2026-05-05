@@ -144,7 +144,7 @@ function createCardHtml(servant, index) {
         <div class="chat-card-face-border"></div>
       </div>
       <div class="chat-card-info">
-        <div class="chat-card-name" title="${servant.name}">${servant.name}</div>
+        <div class="chat-card-name" title="${servant.aliasCN || servant.name}">${servant.aliasCN || servant.name}</div>
         <div class="chat-card-meta">
           <span class="chat-card-stars">${stars}</span>
           <span>${className}</span>
