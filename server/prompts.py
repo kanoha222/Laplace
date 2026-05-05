@@ -92,8 +92,7 @@ def _build_system_prompt() -> str:
     "cards": {{"buster": 3}},
     "npCard": "quick",
     "npTarget": "all"
-  }},
-  "responseTemplate": "为你找到了以下{{description}}的从者："
+  }}
 }}
 ```
 
@@ -139,17 +138,17 @@ def _build_system_prompt() -> str:
 
 用户："有无敌技能的从者"
 ```json
-{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": "invincible", "skillEffects": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": null, "npTarget": null}}, "responseTemplate": "为你找到了以下拥有无敌技能的从者："}}
+{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": "invincible", "skillEffects": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": null, "npTarget": null}}}}
 ```
 
 用户："秩序善，且 30自充以上的绿卡光炮从者有哪些"
 ```json
-{{"intent": "query_servants", "conditions": {{"npCharge": {{"op": "gte", "value": 30}}, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "targetType": null, "traits": [300, 303], "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": "quick", "npTarget": "all"}}, "responseTemplate": "为你找到了以下拥有 30% 及以上自充的秩序善绿卡光炮从者："}}
+{{"intent": "query_servants", "conditions": {{"npCharge": {{"op": "gte", "value": 30}}, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "targetType": null, "traits": [300, 303], "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": "quick", "npTarget": "all"}}}}
 ```
 
 用户："三红配卡的从者"
 ```json
-{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": {{"buster": 3}}, "npCard": null, "npTarget": null}}, "responseTemplate": "为你找到了以下三红配卡的从者："}}
+{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": {{"buster": 3}}, "npCard": null, "npTarget": null}}}}
 ```
 
 请严格遵循以上格式，只输出 JSON，不要有任何多余文字。"""
