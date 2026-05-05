@@ -11,9 +11,23 @@ from pathlib import Path
 from server.individuality import filter_by_traits
 
 DATA_PATH = Path(__file__).parent / "data" / "servants_db.json"
+NICKNAMES_PATH = Path(__file__).parent / "knowledge" / "nicknames.json"
 
 # 全局缓存
 _servants_db: list[dict] | None = None
+_nicknames: dict[str, str] | None = None
+
+
+def load_nicknames() -> dict[str, str]:
+    """加载昵称映射。"""
+    global _nicknames
+    if _nicknames is None:
+        if NICKNAMES_PATH.exists():
+            with open(NICKNAMES_PATH, "r", encoding="utf-8") as f:
+                _nicknames = json.load(f)
+        else:
+            _nicknames = {}
+    return _nicknames
 
 
 def load_database() -> list[dict]:
@@ -108,16 +122,32 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
         if servant.get("className", "").lower() != class_name.lower():
             return False
 
-    # 名称搜索（支持英文、日文和中文翻译）
+    # 名称搜索（支持英文、日文和中文翻译，以及昵称映射）
     name = conditions.get("name")
     if name is not None and isinstance(name, str) and name.strip():
         query_name = name.strip().lower()
+        
+        # 尝试昵称转换
+        nicknames = load_nicknames()
+        # 这里的 key 也要小写匹配
+        mapped_name = None
+        for nick, formal in nicknames.items():
+            if nick.lower() == query_name:
+                mapped_name = formal.lower()
+                break
+        
         en_name = servant.get("name", "").lower()
         cn_name = servant.get("aliasCN", "").lower()
         jp_name = servant.get("originalName", "").lower()
         
-        if (query_name not in en_name) and (query_name not in cn_name) and (query_name not in jp_name):
-            return False
+        # 如果有映射，同时检查映射后的名字和原始输入的 query_name
+        if mapped_name:
+            if (mapped_name not in en_name) and (mapped_name not in cn_name) and (mapped_name not in jp_name) and \
+               (query_name not in en_name) and (query_name not in cn_name) and (query_name not in jp_name):
+                return False
+        else:
+            if (query_name not in en_name) and (query_name not in cn_name) and (query_name not in jp_name):
+                return False
 
     # 单效果筛选
     skill_effect = conditions.get("skillEffect")
