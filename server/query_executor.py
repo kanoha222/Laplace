@@ -130,17 +130,36 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
         # 尝试昵称转换
         nicknames = load_nicknames()
         # 这里的 key 也要小写匹配
-        mapped_name = None
-        for nick, formal in nicknames.items():
+        mapped_data = None
+        for nick, data in nicknames.items():
             if nick.lower() == query_name:
-                mapped_name = formal.lower()
+                mapped_data = data
                 break
+        
+        # 处理昵称映射
+        mapped_name = None
+        extra_filters = {}
+        if isinstance(mapped_data, str):
+            mapped_name = mapped_data.lower()
+        elif isinstance(mapped_data, dict):
+            mapped_name = mapped_data.get("name", "").lower()
+            # 提取额外的过滤条件，如 className
+            for k, v in mapped_data.items():
+                if k != "name":
+                    extra_filters[k] = v
+
+        # 检查额外过滤器（如职阶）
+        for attr, val in extra_filters.items():
+            if attr == "className":
+                if servant.get("className", "").lower() != val.lower():
+                    return False
+            # 可以根据需要扩展其他属性过滤
         
         en_name = servant.get("name", "").lower()
         cn_name = servant.get("aliasCN", "").lower()
         jp_name = servant.get("originalName", "").lower()
         
-        # 如果有映射，同时检查映射后的名字和原始输入的 query_name
+        # 如果有映射名，检查映射后的名字或原始输入名字是否匹配
         if mapped_name:
             if (mapped_name not in en_name) and (mapped_name not in cn_name) and (mapped_name not in jp_name) and \
                (query_name not in en_name) and (query_name not in cn_name) and (query_name not in jp_name):
