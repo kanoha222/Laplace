@@ -18,6 +18,8 @@ import json
 import re
 import subprocess
 import sys
+import urllib.request
+import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -286,6 +288,19 @@ def get_chaldea_commit() -> str:
         return "unknown"
 
 
+def download_mapping_data(filename: str) -> dict:
+    """从 Chaldea Data 下载多语言映射字典。"""
+    url = f"https://raw.githubusercontent.com/chaldea-center/chaldea-data/main/mappings/{filename}"
+    print(f"   ⬇️ 下载 {filename}...")
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=15) as response:
+            return json.loads(response.read().decode('utf-8'))
+    except Exception as e:
+        print(f"   ⚠️ 下载 {filename} 失败: {e}")
+        return {}
+
+
 # ============================================================
 # 4. 主流程
 # ============================================================
@@ -368,8 +383,18 @@ def main():
     })
     print(f"   ✅ 提取 {len(svt_classes)} 个职阶 ({len(playable_classes)} 可用)")
 
-    # --- Step 6: 元数据 ---
-    print("\n📋 Step 5: 生成元数据...")
+    # --- Step 6: 下载多语言映射 ---
+    print("\n📋 Step 5: 下载多语言映射数据...")
+    svt_names = download_mapping_data("svt_names.json")
+    traits_map = download_mapping_data("trait.json")
+    _write_json(OUTPUT_DIR / "mappings.json", {
+        "svt_names": svt_names,
+        "traits": traits_map,
+    })
+    print(f"   ✅ 保存 mappings.json (含 {len(svt_names)} 个从者名, {len(traits_map)} 个特性)")
+
+    # --- Step 7: 元数据 ---
+    print("\n📋 Step 6: 生成元数据...")
     commit = get_chaldea_commit()
     meta = {
         "syncedAt": datetime.now(timezone.utc).isoformat(),

@@ -200,6 +200,36 @@ def build_database(servants: list[dict], matcher: dict) -> list[dict]:
         max_party_charge = max(party_charges) if party_charges else 0
         total_self_charge = sum(self_charges) + sum(party_charges)
 
+        # 计算卡色构成
+        cards_count = {"arts": 0, "buster": 0, "quick": 0}
+        card_map = {"1": "arts", "2": "buster", "3": "quick"}
+        for c in svt.get("cards", []):
+            if str(c) in card_map:
+                cards_count[card_map[str(c)]] += 1
+
+        # 解析宝具信息
+        np_card = "unknown"
+        np_target = "unknown"
+        for np in svt.get("noblePhantasms", []):
+            if np.get("card"):
+                np_card = card_map.get(str(np["card"]), "unknown")
+                # 解析宝具目标
+                for func in np.get("functions", []):
+                    ftype = func.get("funcType", "").lower()
+                    if "damage" in ftype:
+                        target = func.get("funcTargetType", "")
+                        if target == "enemyAll":
+                            np_target = "all"
+                        elif target == "enemy":
+                            np_target = "one"
+                        else:
+                            np_target = "support"
+                        break
+                # 如果是纯辅助宝具（没有伤害函数）
+                if np_target == "unknown":
+                    np_target = "support"
+                break
+
         entry = {
             "id": svt["id"],
             "collectionNo": svt.get("collectionNo", 0),
@@ -207,6 +237,13 @@ def build_database(servants: list[dict], matcher: dict) -> list[dict]:
             "rarity": svt.get("rarity", 0),
             "className": svt.get("className", "unknown"),
             "faceUrl": get_face_url(svt),
+            # Phase 3 新增属性
+            "traits": [t["id"] for t in svt.get("traits", [])],
+            "gender": svt.get("gender", "unknown"),
+            "attribute": svt.get("attribute", "unknown"),
+            "cards": cards_count,
+            "npCard": np_card,
+            "npTarget": np_target,
             # NP 充能数据（向后兼容）
             "npCharges": charges,
             "maxSelfCharge": max_self_charge,

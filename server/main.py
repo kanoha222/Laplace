@@ -11,6 +11,8 @@ from pydantic import BaseModel
 from server.prompts import get_system_prompt
 from server.llm_client import chat_completion
 from server.query_executor import execute_query, load_database
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 app = FastAPI(
     title="Laplace API",
@@ -119,3 +121,6 @@ async def chat(req: ChatRequest):
 async def health():
     """健康检查。"""
     return {"status": "ok", "service": "laplace"}
+
+# 挂载前端静态文件目录
+app.mount("/", StaticFiles(directory="demo", html=True), name="static")

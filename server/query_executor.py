@@ -8,6 +8,7 @@ Laplace — Query Executor
 
 import json
 from pathlib import Path
+from server.individuality import filter_by_traits
 
 DATA_PATH = Path(__file__).parent / "data" / "servants_db.json"
 
@@ -40,6 +41,13 @@ def execute_query(conditions: dict) -> list[dict]:
             - skillEffect: str | None  (单效果筛选)
             - skillEffects: list[str] | None  (多效果 AND 筛选)
             - targetType: str | None  ("self" | "party" | "enemy")
+            - traits: list[int] | None  (特性 ID 筛选)
+            - excludeTraits: list[int] | None  (排斥特性 ID 筛选)
+            - gender: str | None  (male, female, unknown)
+            - attribute: str | None  (earth, sky, human, star, beast)
+            - cards: dict | None  (如 {"buster": 3})
+            - npCard: str | None  (buster, arts, quick)
+            - npTarget: str | None  (one, all, support)
 
     Returns:
         匹配的从者列表
@@ -120,6 +128,46 @@ def _match_servant(servant: dict, conditions: dict) -> bool:
         for effect in skill_effects:
             if not _match_effect(servant, effect, target_type):
                 return False
+
+    # 特性筛选
+    traits = conditions.get("traits")
+    exclude_traits = conditions.get("excludeTraits")
+    if traits or exclude_traits:
+        servant_traits = servant.get("traits", [])
+        if not filter_by_traits(servant_traits, traits, exclude_traits):
+            return False
+
+    # 性别筛选
+    gender = conditions.get("gender")
+    if gender is not None:
+        if servant.get("gender", "") != gender:
+            return False
+
+    # 阵营筛选
+    attribute = conditions.get("attribute")
+    if attribute is not None:
+        if servant.get("attribute", "") != attribute:
+            return False
+
+    # 配卡筛选
+    cards = conditions.get("cards")
+    if cards is not None and isinstance(cards, dict):
+        servant_cards = servant.get("cards", {})
+        for card_type, count in cards.items():
+            if servant_cards.get(card_type, 0) < count:
+                return False
+
+    # 宝具颜色筛选
+    np_card = conditions.get("npCard")
+    if np_card is not None:
+        if servant.get("npCard", "") != np_card:
+            return False
+
+    # 宝具目标/类型筛选
+    np_target = conditions.get("npTarget")
+    if np_target is not None:
+        if servant.get("npTarget", "") != np_target:
+            return False
 
     return True
 

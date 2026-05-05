@@ -48,12 +48,14 @@
 | 2026-05-05 | Demo v1 完成 | 30% NP 自充筛选器 (Python + Web) |
 | 2026-05-05 | AI Native v1 | 对话式查询上线（FastAPI + LLM 意图解析 + 从者卡片） |
 | 2026-05-05 | 架构升级 | 确立 Schema Mirror 策略，目标对标 Chaldea 全数据查询 |
+| 2026-05-05 | Phase 2 完成 | 实现了 sync_chaldea.py 提取 5 个 Dart 文件的效果知识并与 LLM 集成 |
+| 2026-05-05 | Phase 3 完成 | 实现了多语言映射、特性（Trait）匹配算法、宝具与配卡等从者深层属性过滤 |
 
 ## 技术备忘
 
 - **LLM 意图解析链路**: 用户输入 → LLM 解析为 JSON 指令 → Query Executor 执行 → LLM 格式化结果 → 返回对话框
 - **数据精度**: FGO NP 值以 1/10000 为单位存储，`Value=3000` 表示 30%
 - **Atlas Academy 批量端点**: `https://api.atlasacademy.io/export/JP/nice_servant_lang_en.json`
-- **Schema Mirror 知识源**: Chaldea `effect.dart` (SkillEffect 40+分类)、`func.dart` (FuncType 165+)、`buff.dart` (BuffType 200+)、`mappings.dart` (多语言映射)
+- **Schema Mirror 知识源**: Chaldea `effect.dart` (SkillEffect 40+分类)、`func.dart` (FuncType 165+)、`buff.dart` (BuffType 200+)、`common.dart` (SvtClass 50+)
 - **Chaldea 关键数据路径**: `servant.skills[] → skill.functions[] → function.svals[9].Value` (Lv.10数值)
-- **效果分类体系**: 攻击(19种) / 防御(11种) / 异常(14种) / 辅助(6种) = 40+ 子分类
+- **效果分类体系**: 攻击(20种) / 防御(11种) / 异常(15种) / 辅助(9种) = 55+ 子分类

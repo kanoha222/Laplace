@@ -66,9 +66,10 @@ def _build_system_prompt() -> str:
 你可以查询从者（Servant）数据，包括：
 - NP 自充能力（自身充能百分比）
 - 技能效果（无敌、回避、毅力、加攻、充能等 40+ 种效果）
-- 职阶（Saber, Archer, Lancer, Rider, Caster, Assassin, Berserker, Ruler, Avenger, Moon Cancer, Alter Ego, Foreigner, Pretender）
-- 稀有度（0-5 星）
-- 从者名称
+- 从者属性：性别、阵营（天地人星兽）、指令卡配卡（红蓝绿卡数量）、宝具颜色、宝具类型（光炮/单体/辅助）
+- 特性（Trait）：如秩序、善、恶、混沌、中立、龙、神性、罗马、阿尔托莉雅脸等
+- 职阶与稀有度
+- 从者名称搜索
 {effect_section}
 ## 输出格式要求
 你必须严格按以下 JSON 格式回复，不要输出任何其他内容：
@@ -83,7 +84,14 @@ def _build_system_prompt() -> str:
     "name": "",
     "skillEffect": "invincible",
     "skillEffects": ["avoidance", "guts"],
-    "targetType": "self"
+    "targetType": "self",
+    "traits": [300, 303],
+    "excludeTraits": [1],
+    "gender": "female",
+    "attribute": "earth",
+    "cards": {{"buster": 3}},
+    "npCard": "quick",
+    "npTarget": "all"
   }},
   "responseTemplate": "为你找到了以下{{description}}的从者："
 }}
@@ -99,6 +107,13 @@ def _build_system_prompt() -> str:
   - `skillEffect`: 单个技能效果名称。如果用户只查询一种效果，用此字段。设为 null 表示不筛选效果。
   - `skillEffects`: 多个技能效果名称数组（AND 逻辑，必须同时拥有）。如果用户查询多种效果组合，用此字段。设为 null 表示不筛选。
   - `targetType`: 效果目标类型。可选 "self"（自身）、"party"（全体己方）、"enemy"（敌方）。设为 null 表示不筛选目标。
+  - `traits`: 必须拥有的特性 ID 数组。常见：秩序=300, 混沌=301, 中立=302, 善=303, 恶=304, 中庸=305, 狂=306, 夏=308, 神性=2000, 人类=2001, 龙=2002, 罗马=2004, 猛兽=2005, 阿尔托莉雅脸=2007, 骑乘=2009, 亚瑟=2010, 死灵=1002, 魔兽=1004, 魔性=2019, 妖精=1177, 鬼=1132。例如秩序善就是 [300, 303]。没提设为 null。
+  - `excludeTraits`: 不能拥有的特性 ID 数组。没提设为 null。
+  - `gender`: 性别。male, female, unknown。没提设为 null。
+  - `attribute`: 阵营。earth(地), sky(天), human(人), star(星), beast(兽)。没提设为 null。
+  - `cards`: 必须包含的指令卡数量。例如三红配卡是 {{"buster": 3}}。键可选 buster, arts, quick。没提设为 null。
+  - `npCard`: 宝具颜色。buster(红卡), arts(蓝卡), quick(绿卡)。没提设为 null。
+  - `npTarget`: 宝具目标/类型。one(单体), all(光炮), support(辅助)。没提设为 null。
 
 ## 职阶中文映射
 - 剑阶/剑士 = saber
@@ -124,27 +139,17 @@ def _build_system_prompt() -> str:
 
 用户："有无敌技能的从者"
 ```json
-{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": "invincible", "skillEffects": null, "targetType": null}}, "responseTemplate": "为你找到了以下拥有无敌技能的从者："}}
+{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": "invincible", "skillEffects": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": null, "npTarget": null}}, "responseTemplate": "为你找到了以下拥有无敌技能的从者："}}
 ```
 
-用户："有回避和毅力的五星从者"
+用户："秩序善，且 30自充以上的绿卡光炮从者有哪些"
 ```json
-{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": {{"op": "eq", "value": 5}}, "className": null, "name": null, "skillEffect": null, "skillEffects": ["avoidance", "guts"], "targetType": null}}, "responseTemplate": "为你找到了以下同时拥有回避和毅力的五星从者："}}
+{{"intent": "query_servants", "conditions": {{"npCharge": {{"op": "gte", "value": 30}}, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "targetType": null, "traits": [300, 303], "excludeTraits": null, "gender": null, "attribute": null, "cards": null, "npCard": "quick", "npTarget": "all"}}, "responseTemplate": "为你找到了以下拥有 30% 及以上自充的秩序善绿卡光炮从者："}}
 ```
 
-用户："可以给全队加攻的 Caster"
+用户："三红配卡的从者"
 ```json
-{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": "caster", "name": null, "skillEffect": "upAtk", "skillEffects": null, "targetType": "party"}}, "responseTemplate": "为你找到了以下可以给全队加攻的 Caster："}}
-```
-
-用户："大于 50 自充的从者"
-```json
-{{"intent": "query_servants", "conditions": {{"npCharge": {{"op": "gte", "value": 50}}, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "targetType": null}}, "responseTemplate": "为你找到了以下拥有 50% 及以上自充的从者："}}
-```
-
-用户："五星 Caster 有自充的"
-```json
-{{"intent": "query_servants", "conditions": {{"npCharge": {{"op": "gte", "value": 1}}, "rarity": {{"op": "eq", "value": 5}}, "className": "caster", "name": null, "skillEffect": null, "skillEffects": null, "targetType": null}}, "responseTemplate": "为你找到了以下拥有自充的五星 Caster："}}
+{{"intent": "query_servants", "conditions": {{"npCharge": null, "rarity": null, "className": null, "name": null, "skillEffect": null, "skillEffects": null, "targetType": null, "traits": null, "excludeTraits": null, "gender": null, "attribute": null, "cards": {{"buster": 3}}, "npCard": null, "npTarget": null}}, "responseTemplate": "为你找到了以下三红配卡的从者："}}
 ```
 
 请严格遵循以上格式，只输出 JSON，不要有任何多余文字。"""
