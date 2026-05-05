@@ -87,6 +87,14 @@
 - **准则**：领域知识（FuncType, BuffType）必须源自 `sync_chaldea.py` 的提取。
 - **执行**：如果发现某个技能效果搜不到，优先检查 `effect_schema.json` 映射，而不是在查询逻辑中写硬编码。
 
+### 4. LLM Contract 结构化契约
+- **准则**：所有 LLM 意图解析必须通过 Pydantic 模型定义的强契约进行。
+- **执行**：
+  1. 优先启用 OpenAI 兼容的 `response_format/json_schema` 模式。
+  2. 必须包含 Pydantic 校验环节，严禁直接使用 `json.loads()` 的原始输出进入业务逻辑。
+  3. 任何查询维度的增删必须同步更新 `server/schemas.py`。
+- **目的**：确保 Query Executor 接收的数据绝对合法，消除解析幻觉和格式漂移。
+
 ## 禁止事项
 
 - ❌ 未经确认删除文件或数据
