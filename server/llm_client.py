@@ -1,8 +1,14 @@
 """
 Laplace — LLM Client
 
-OpenAI-compatible LLM client with fallback models and a structured
+OpenAI Responses API client with fallback models and a structured
 intent contract for JSON-mode calls.
+
+迁移说明：
+- 从 Chat Completions API 迁移至 Responses API（2025 推荐）
+- 端点：/v1/chat/completions → /v1/responses
+- 参数：messages → input, system role → instructions
+- 结构化输出：response_format → text.format
 """
 
 import json
@@ -29,7 +35,7 @@ FALLBACK_MODELS = [
 
 
 class LLMResponseFormatUnsupported(Exception):
-    """Raised when a model gateway rejects structured response_format."""
+    """Raised when a model gateway rejects structured text.format."""
 
 
 async def chat_completion(
@@ -41,15 +47,15 @@ async def chat_completion(
     json_mode: bool = True,
 ) -> dict:
     """
-    调用 LLM Chat Completion API。
+    调用 LLM Responses API。
 
     Args:
-        system_prompt: 系统 prompt
-        user_message: 用户消息
+        system_prompt: 系统指令（对应 Responses API 的 instructions）
+        user_message: 用户消息（对应 Responses API 的 input）
         model: 模型名称，None 则使用主模型
         max_tokens: 最大 token 数
         temperature: 温度，低温 = 更确定性
-        json_mode: True 时校验为 IntentResponse JSON
+        json_mode: True 时使用结构化输出（text.format）
 
     Returns:
         解析后的 JSON 响应或 {"text": "..."}
@@ -86,9 +92,9 @@ async def _call_model(
     temperature: float,
     json_mode: bool = True,
 ) -> dict:
-    """调用单个模型；JSON 模式优先尝试 response_format。"""
+    """调用单个模型；JSON 模式优先尝试 text.format 结构化输出。"""
     if not json_mode:
-        data = await _post_chat_completion(
+        data = await _post_response(
             model,
             system_prompt,
             user_message,
@@ -96,12 +102,12 @@ async def _call_model(
             temperature,
             use_structured_output=False,
         )
-        content = _extract_message_content(data)
+        content = _extract_response_text(data)
         return {"text": content, "_model": model}
 
     response_format = "json_schema"
     try:
-        data = await _post_chat_completion(
+        data = await _post_response(
             model,
             system_prompt,
             user_message,
@@ -111,7 +117,7 @@ async def _call_model(
         )
     except LLMResponseFormatUnsupported:
         response_format = "text_fallback"
-        data = await _post_chat_completion(
+        data = await _post_response(
             model,
             system_prompt,
             user_message,
@@ -120,43 +126,42 @@ async def _call_model(
             use_structured_output=False,
         )
 
-    parsed = parse_intent_response(_extract_message_content(data))
+    parsed = parse_intent_response(_extract_response_text(data))
     parsed["_model"] = model
     parsed["_response_format"] = response_format
     return parsed
 
 
-async def _post_chat_completion(
+async def _post_response(
     model: str,
-    system_prompt: str,
-    user_message: str,
+    instructions: str,
+    input_text: str,
     max_tokens: int,
     temperature: float,
     use_structured_output: bool,
 ) -> dict:
-    """Send one Chat Completions request."""
-    url = f"{BASE_URL}/chat/completions"
+    """Send one Responses API request."""
+    url = f"{BASE_URL}/responses"
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {API_KEY}",
     }
     payload: dict[str, Any] = {
         "model": model,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_message},
-        ],
-        "max_tokens": max_tokens,
+        "instructions": instructions,
+        "input": input_text,
+        "max_output_tokens": max_tokens,
         "temperature": temperature,
     }
     if use_structured_output:
-        payload["response_format"] = {
-            "type": "json_schema",
-            "json_schema": {
+        # Responses API 使用 text.format 而非 response_format
+        payload["text"] = {
+            "format": {
+                "type": "json_schema",
                 "name": "laplace_intent_response",
                 "strict": True,
                 "schema": intent_response_json_schema(),
-            },
+            }
         }
 
     async with httpx.AsyncClient(timeout=30.0) as client:
@@ -214,23 +219,25 @@ def extract_json_object(content: str) -> str:
     raise ValueError("LLM response contains an incomplete JSON object")
 
 
-def _extract_message_content(data: dict) -> str:
-    """Extract assistant content from an OpenAI-compatible response."""
-    message = data["choices"][0]["message"]
-    content = message.get("content")
-    if isinstance(content, str):
-        return content
-    if isinstance(content, list):
-        parts = []
-        for item in content:
-            if isinstance(item, dict):
-                if isinstance(item.get("text"), str):
-                    parts.append(item["text"])
-                elif isinstance(item.get("content"), str):
-                    parts.append(item["content"])
-        if parts:
-            return "\n".join(parts)
-    raise ValueError("LLM response message has no text content")
+def _extract_response_text(data: dict) -> str:
+    """Extract text content from a Responses API response."""
+    # Responses API 提供 output_text 辅助字段
+    if "output_text" in data:
+        return data["output_text"]
+    
+    # 兼容格式：从 output 数组中提取
+    if "output" in data:
+        for item in data["output"]:
+            if item.get("type") == "message":
+                content = item.get("content", [])
+                if isinstance(content, list):
+                    for part in content:
+                        if isinstance(part, dict) and part.get("type") == "output_text":
+                            return part.get("text", "")
+                elif isinstance(content, str):
+                    return content
+    
+    raise ValueError("Responses API response has no text content")
 
 
 def _looks_like_response_format_error(resp: httpx.Response) -> bool:

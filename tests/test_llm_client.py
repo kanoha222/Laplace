@@ -16,11 +16,28 @@ class FakeResponse:
         self.text = text if text is not None else str(content)
 
     def json(self):
-        return {"choices": [{"message": {"content": self._content}}]}
+        # Responses API 格式：output_text 辅助字段
+        return {
+            "id": "resp_test_123",
+            "object": "response",
+            "output_text": self._content,
+            "output": [
+                {
+                    "type": "message",
+                    "role": "assistant",
+                    "content": [
+                        {
+                            "type": "output_text",
+                            "text": self._content
+                        }
+                    ]
+                }
+            ]
+        }
 
     def raise_for_status(self):
         if self.status_code >= 400:
-            request = httpx.Request("POST", "https://example.test/chat/completions")
+            request = httpx.Request("POST", "https://example.test/responses")
             response = httpx.Response(self.status_code, request=request, text=self.text)
             raise httpx.HTTPStatusError("error", request=request, response=response)
 
@@ -93,7 +110,11 @@ def test_chat_completion_uses_structured_response_format():
 
     assert result["_model"] == "primary"
     assert result["_response_format"] == "json_schema"
-    assert FakeAsyncClient.requests[0]["response_format"]["type"] == "json_schema"
+    # Responses API 使用 text.format 而非 response_format
+    assert FakeAsyncClient.requests[0]["text"]["format"]["type"] == "json_schema"
+    # 验证使用 instructions 和 input 参数
+    assert FakeAsyncClient.requests[0]["instructions"] == "system"
+    assert FakeAsyncClient.requests[0]["input"] == "user"
 
 
 def test_chat_completion_downgrades_when_response_format_is_unsupported():
@@ -101,7 +122,7 @@ def test_chat_completion_downgrades_when_response_format_is_unsupported():
         FakeResponse(
             status_code=400,
             content="",
-            text='{"error":"response_format json_schema unsupported"}',
+            text='{"error":"text.format json_schema unsupported"}',
         ),
         FakeResponse(content=f"```json\n{VALID_JSON}\n```"),
     ]
@@ -109,8 +130,11 @@ def test_chat_completion_downgrades_when_response_format_is_unsupported():
     result = run(llm_client.chat_completion("system", "user", model="primary"))
 
     assert result["_response_format"] == "text_fallback"
-    assert "response_format" in FakeAsyncClient.requests[0]
-    assert "response_format" not in FakeAsyncClient.requests[1]
+    # 第一次请求使用 text.format
+    assert "text" in FakeAsyncClient.requests[0]
+    assert "format" in FakeAsyncClient.requests[0]["text"]
+    # 降级后不使用 text.format
+    assert "text" not in FakeAsyncClient.requests[1] or "format" not in FakeAsyncClient.requests[1].get("text", {})
 
 
 def test_chat_completion_tries_fallback_model_after_schema_failure():
