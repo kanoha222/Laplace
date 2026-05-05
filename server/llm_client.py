@@ -28,6 +28,7 @@ async def chat_completion(
     model: str | None = None,
     max_tokens: int = 1024,
     temperature: float = 0.1,
+    json_mode: bool = True,
 ) -> dict:
     """
     调用 LLM Chat Completion API。
@@ -50,7 +51,7 @@ async def chat_completion(
     last_error = None
     for m in models_to_try:
         try:
-            result = await _call_model(m, system_prompt, user_message, max_tokens, temperature)
+            result = await _call_model(m, system_prompt, user_message, max_tokens, temperature, json_mode)
             return result
         except Exception as e:
             print(f"⚠️  模型 {m} 调用失败: {e}")
@@ -66,6 +67,7 @@ async def _call_model(
     user_message: str,
     max_tokens: int,
     temperature: float,
+    json_mode: bool = True,
 ) -> dict:
     """调用单个模型。"""
     url = f"{BASE_URL}/chat/completions"
@@ -89,6 +91,10 @@ async def _call_model(
         data = resp.json()
 
     content = data["choices"][0]["message"]["content"]
+
+    # 如果不需要解析 JSON，直接返回文本
+    if not json_mode:
+        return {"text": content, "_model": model}
 
     # 尝试解析 JSON（LLM 可能包裹在 ```json ... ``` 中）
     content = content.strip()

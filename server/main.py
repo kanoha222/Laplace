@@ -8,7 +8,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from server.prompts import get_system_prompt
+import json
+from server.prompts import get_system_prompt, get_generation_prompt
 from server.llm_client import chat_completion
 from server.query_executor import execute_query, load_database
 from fastapi.staticfiles import StaticFiles
@@ -98,20 +99,59 @@ async def chat(req: ChatRequest):
     conditions = parsed.get("conditions", {})
     servants = execute_query(conditions)
 
-    # 4. 组装回复
-    response_template = parsed.get("responseTemplate", "为你找到了以下从者：")
-    reply = f"{response_template}（共 {len(servants)} 位）"
+    # 4. 构建精简 Context
+    total_found = len(servants)
+    max_context_size = 5
+    top_results = []
+    
+    for s in servants[:max_context_size]:
+        top_results.append({
+            "name": s.get("name"),
+            "aliasCN": s.get("aliasCN"),
+            "className": s.get("className"),
+            "rarity": s.get("rarity"),
+            "maxSelfCharge": s.get("maxSelfCharge"),
+            "npCard": s.get("npCard"),
+            "npTarget": s.get("npTarget"),
+            "skillEffects": s.get("skillEffects")
+        })
+        
+    context_data = {
+        "total_found": total_found,
+        "query_conditions": conditions,
+        "top_results_details": top_results
+    }
+    
+    # 5. 第二阶段：生成自然语言回复 (RAG)
+    generation_prompt = get_generation_prompt(user_message, json.dumps(context_data, ensure_ascii=False))
+    
+    try:
+        # LLM 的第二次调用（非严格 JSON，返回纯文本）
+        generation_response = await chat_completion(
+            system_prompt="You are a helpful AI assistant.",
+            user_message=generation_prompt,
+            temperature=0.7,
+            json_mode=False
+        )
+        final_reply = generation_response.get("text", "").strip()
+        if not final_reply:
+            raise ValueError("Empty response from LLM")
+    except Exception as e:
+        print(f"RAG Generate Error: {e}")
+        # 如果生成失败，降级回旧的逻辑
+        response_template = parsed.get("responseTemplate", "为你找到了以下从者：")
+        final_reply = f"{response_template}（共 {total_found} 位）"
+        if total_found > max_context_size:
+            final_reply += f"（仅显示前 {max_context_size} 位详情，更多请查看卡片）"
 
-    # 限制返回数量，避免响应过大
+    # 限制返回给前端的数量，避免响应过大
     max_results = 50
     returned_servants = servants[:max_results]
-    if len(servants) > max_results:
-        reply += f"\n（结果较多，显示前 {max_results} 位）"
 
     return ChatResponse(
-        reply=reply,
+        reply=final_reply,
         servants=returned_servants,
-        count=len(servants),
+        count=total_found,
         query=conditions,
         model=model_used,
     )
