@@ -105,11 +105,14 @@ function appendAssistantResponse(data) {
     </div>`;
   }
 
+  // 如果引入了 marked，则解析 Markdown，否则兜底安全转义
+  const replyHtml = typeof marked !== 'undefined' ? marked.parse(data.reply) : `<p>${escapeHtml(data.reply)}</p>`;
+
   msg.innerHTML = `
     <div class="message-avatar">⧫</div>
     <div class="message-content">
       <div class="message-bubble">
-        <p>${escapeHtml(data.reply)}</p>
+        <div class="markdown-body">${replyHtml}</div>
         ${cardsHtml}
       </div>
     </div>
