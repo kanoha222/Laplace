@@ -110,7 +110,7 @@ async def chat(req: ChatRequest):
             "aliasCN": s.get("aliasCN"),
             "className": s.get("className"),
             "rarity": s.get("rarity"),
-            "maxSelfCharge": s.get("maxSelfCharge"),
+            "totalSelfCharge": s.get("totalSelfCharge"),
             "npCard": s.get("npCard"),
             "npTarget": s.get("npTarget"),
             "skillEffects": s.get("skillEffects")
