@@ -17,15 +17,16 @@
 
 ### 提交规范
 
-遵循 Conventional Commits 格式：
-
+1. **遵循 Conventional Commits 格式**：
 ```
 <type>(<scope>): <description>
 
 [optional body]
 ```
-
 类型包括：`feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+
+2. **强制同步远程代码库**：
+> **[非常重要]** 所有的本地 `git commit` 动作完成后，必须立即执行 `git push`（或 `git push origin main`）将代码推送到 GitHub 远程仓库，除非当时明确处于断网或实验性分支。不要只把代码留在本地！
 
 ## 工作流程
 
