@@ -139,8 +139,10 @@ async def chat(request: ChatRequest):
         raw_np_target = s.get("npTarget")
         raw_class_name = s.get("className")
         raw_effects = s.get("skillEffects") or []
+        raw_np_effects = s.get("npEffects") or []
         
         translated_effects = [get_effect_translation(e) for e in raw_effects]
+        translated_np_effects = [get_effect_translation(e) for e in raw_np_effects]
         
         top_results.append({
             "name": s.get("name"),
@@ -150,7 +152,8 @@ async def chat(request: ChatRequest):
             "totalSelfCharge": s.get("totalSelfCharge"),
             "npCard": NP_CARD_MAP.get(str(raw_np_card).lower(), raw_np_card),
             "npTarget": NP_TARGET_MAP.get(str(raw_np_target).lower(), raw_np_target),
-            "skillEffects": translated_effects
+            "skillEffects": translated_effects,
+            "npEffects": translated_np_effects
         })
         
     context_data = {

@@ -221,13 +221,23 @@ def build_database(servants: list[dict], matcher: dict, name_mapping: dict) -> l
         # 解析宝具信息
         np_card = "unknown"
         np_target = "unknown"
+        np_effects_set = set()
         for np in svt.get("noblePhantasms", []):
             if np.get("card"):
                 np_card = card_map.get(str(np["card"]), "unknown")
-                # 解析宝具目标
+                # 解析宝具目标与附带特效
                 for func in np.get("functions", []):
-                    ftype = func.get("funcType", "").lower()
-                    if "damage" in ftype:
+                    ftype = func.get("funcType", "")
+                    
+                    # 提取宝具特效 (复用技能提取逻辑)
+                    matched_effects = set(matcher["funcType"].get(ftype, []))
+                    for buff in func.get("buffs", []):
+                        buff_type = buff.get("type", "")
+                        matched_effects.update(matcher["buffType"].get(buff_type, []))
+                    
+                    np_effects_set.update(matched_effects)
+
+                    if "damage" in ftype.lower():
                         target = func.get("funcTargetType", "")
                         if target == "enemyAll":
                             np_target = "all"
@@ -235,7 +245,7 @@ def build_database(servants: list[dict], matcher: dict, name_mapping: dict) -> l
                             np_target = "one"
                         else:
                             np_target = "support"
-                        break
+                
                 # 如果是纯辅助宝具（没有伤害函数）
                 if np_target == "unknown":
                     np_target = "support"
@@ -268,10 +278,10 @@ def build_database(servants: list[dict], matcher: dict, name_mapping: dict) -> l
             "maxSelfCharge": max_self_charge,
             "maxPartyCharge": max_party_charge,
             "totalSelfCharge": total_self_charge,
-            "hasNpCharge": len(charges) > 0,
-            # 全效果数据（Phase 2 新增）
-            "skillEffects": sorted(skill_effects),
-            "skillDetails": skill_details,
+            "hasNpCharge": bool(self_charges) or bool(party_charges) or len(charges) > 0,
+            "skillEffects": sorted(list(skill_effects)),
+            "npEffects": sorted(list(np_effects_set)),
+            "skillDetails": skill_details
         }
         db.append(entry)
         if skill_effects:
