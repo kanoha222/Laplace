@@ -108,11 +108,11 @@ def _build_system_prompt() -> str:
 - 术阶/术士/法师 = caster
 - 杀阶/刺客 = assassin
 - 狂阶/狂战士 = berserker
-- 裁定者/裁 = ruler
-- 复仇者 = avenger
-- 月癌 = moonCancer
-- 异类 = alterEgo
-- 外来者/降临者 = foreigner
+- 裁定者/尺阶 = ruler
+- 复仇者/仇阶 = avenger
+- 月之癌/月癌 = moonCancer
+- 他人格/AE阶 = alterEgo
+- 降临者/外神 = foreigner
 - 伪装者 = pretender
 
 ## 示例
