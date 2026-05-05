@@ -4,84 +4,97 @@
 
 ## 项目简介
 
-Laplace 利用大语言模型（LLM）的意图识别能力，将传统的 FGO 工具软件转化为**对话式智能助手**。用户无需学习复杂的筛选 UI，只需用自然语言提问，即可获得精确的游戏数据。
+Laplace 利用大语言模型（LLM）的意图识别能力，将传统的 FGO 工具软件转化为**对话式智能助手**。用户无需学习复杂的筛选 UI，只需用自然语言提问，即可获得精确的游戏数据。基于 **Schema Mirror** 架构，将 Chaldea Dart 核心领域知识无缝注入大模型。
 
-**Old Way**: 打开 App → 选择从者列表 → 点击筛选 → 勾选 NP 充能 → 输入 30
+**Old Way**: 打开 App → 选择从者列表 → 点击筛选 → 勾选各种条件组合
 
-**Laplace**: 输入 "帮我找一下 30 自充的从者有哪些" → AI 直接返回结果
+**Laplace**: 输入 "帮我找一下 30 自充的从者有哪些" 或 "有无敌技能的五星从者" → AI 直接返回结果
 
 ## 功能特性
 
-- [x] 30% NP 自充从者筛选（静态 Demo）
-- [ ] 对话框界面 — 自然语言查询
-- [ ] LLM 意图解析 — 自然语言 → 结构化查询指令
-- [ ] Query Executor — 执行查询，返回结果
+- [x] 自然语言对话交互界面
+- [x] LLM 意图解析 — 自然语言 → 结构化 JSON 查询指令
+- [x] Schema Mirror 架构 — 同步提取开源项目 Chaldea 的游戏效果领域知识
+- [x] 全面从者查询 — 支持 30% NP 自充、55 种复杂技能效果（如无敌、毅力、加攻）、目标类型组合筛选
+- [ ] 从者与特性深度解析 — 性别、阵营、配卡、特性（Trait）
 - [ ] 从者别名系统 — 支持"呆毛""村正"等非规范术语
-- [ ] 多维度查询 — 职阶/稀有度/技能效果组合筛选
 
 ## 技术栈
 
 | 类别 | 技术 |
 | :--- | :--- |
-| 前端 | HTML / CSS / JavaScript |
-| 后端 | Python (FastAPI) |
-| LLM | OpenAI / Gemini / Claude API |
-| 数据源 | Atlas Academy API + Chaldea |
-| 协议 | Strict JSON Schema |
+| 前端 | HTML / Vanilla CSS / Vanilla JS |
+| 后端 | Python (FastAPI, Uvicorn) |
+| LLM | API 兼容模型 (如 Claude/Deepseek) 托管于 Obao Cloud |
+| 数据源 | Atlas Academy API (底层数据) + Chaldea (领域知识) |
 
 ## 快速开始
 
 ### 环境要求
 
-- Python 3.10+
-- Node.js (可选，用于开发)
+- Python 3.12+
 
-### 安装
+### 安装与启动
 
 ```bash
+# 1. 创建虚拟环境并激活
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r extractor/requirements.txt
+
+# 2. 安装依赖
+pip install -r server/requirements.txt
+
+# 3. 配置 API Key
+cp .env.example .env
+# 编辑 .env 填入你的模型 API 密钥
+
+# 4. 启动 FastAPI 服务端
+python3 -m uvicorn server.main:app --reload
+
+# 5. 打开前端界面
+# 在浏览器中直接打开 demo/index.html 即可使用
 ```
 
-### 运行 Demo (v1 静态版)
+### 知识库与数据同步
 
-```bash
-cd demo && python3 -m http.server 8080
-# 访问 http://localhost:8080
-```
-
-### 更新从者数据
+系统包含一个独立的数据刷新管线：
 
 ```bash
 source .venv/bin/activate
-python3 extractor/np_charge_filter.py
+
+# 1. 解析 Chaldea 源码生成枚举与效果知识库 (Effect Schema)
+python3 server/sync_chaldea.py
+
+# 2. 根据知识库去 Atlas API 抓取从者全量数据
+python3 -m server.data_loader
 ```
 
 ## 项目结构
 
 ```
 Laplace/
-├── README.md              # 项目说明
-├── SOUL.md                # AI 助手人格定义
-├── AGENTS.md              # AI 操作指南与全局约束
-├── USER.md                # 用户画像
-├── MEMORY.md              # 长期记忆与项目知识库
-├── 需求描述.md             # 需求文档
-├── demo/                  # Web Demo
+├── README.md              # 项目主页
+├── SOUL.md / AGENTS.md / USER.md / MEMORY.md # AI 系统级 Prompt 与记忆
+├── 需求描述.md             # 详细需求与架构规划
+├── demo/                  # Web 前端界面
 │   ├── index.html
 │   ├── style.css
-│   ├── app.js
-│   └── data/              # 预处理数据
-├── extractor/             # 数据提取器
-│   ├── np_charge_filter.py
-│   └── requirements.txt
-└── chaldea-center/        # 参考源码 (gitignored)
+│   └── app.js
+├── server/                # Python FastAPI 后端
+│   ├── main.py            # API 入口
+│   ├── llm_client.py      # 大模型交互客户端
+│   ├── prompts.py         # System Prompt 模板与组装
+│   ├── query_executor.py  # 核心查询执行器
+│   ├── data_loader.py     # 从者数据提取构建
+│   ├── sync_chaldea.py    # Schema Mirror 领域知识解析器
+│   ├── data/              # 生成的从者数据库
+│   └── knowledge/         # 提取的 JSON 格式领域知识
+└── chaldea-center/        # Chaldea 参考源码子模块
 ```
 
 ## 合规声明
 
-数据及部分逻辑源自开源项目 [Chaldea](https://github.com/chaldea-center/chaldea)，数据来源 [Atlas Academy](https://atlasacademy.io/)。
+数据及部分领域逻辑源自开源项目 [Chaldea](https://github.com/chaldea-center/chaldea)，数据来源 [Atlas Academy](https://atlasacademy.io/)。
 
 ## License
 
