@@ -10,12 +10,43 @@ from pydantic import BaseModel
 
 import json
 import uuid
+from pathlib import Path
 from server.prompts import get_system_prompt, get_generation_prompt
 from server.llm_client import chat_completion
 from server.query_executor import execute_query, load_database
 from server.logger import log_chat_trace
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+
+# 预消化翻译字典
+NP_CARD_MAP = {"buster": "红卡", "arts": "蓝卡", "quick": "绿卡"}
+NP_TARGET_MAP = {"all": "全体(光炮)", "one": "单体", "support": "辅助"}
+CLASS_MAP = {
+    "saber": "剑阶", "archer": "弓阶", "lancer": "枪阶",
+    "rider": "骑阶", "caster": "术阶", "assassin": "杀阶",
+    "berserker": "狂阶", "ruler": "裁定者(Ruler)", "avenger": "复仇者(Avenger)",
+    "mooncancer": "月癌(MoonCancer)", "alterego": "他人格(AlterEgo)",
+    "foreigner": "降临者(Foreigner)", "pretender": "伪装者(Pretender)",
+    "shielder": "盾阶", "beast": "兽阶(Beast)"
+}
+
+_effect_map = None
+
+def get_effect_translation(effect_code: str) -> str:
+    global _effect_map
+    if _effect_map is None:
+        _effect_map = {}
+        schema_path = Path(__file__).parent / "knowledge" / "effect_schema.json"
+        if schema_path.exists():
+            with open(schema_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                for effect in data.get("effects", []):
+                    name = effect.get("name")
+                    aliases = effect.get("aliases_zh", [])
+                    if name and aliases:
+                        _effect_map[name] = aliases[0]
+    return _effect_map.get(effect_code, effect_code)
+
 
 app = FastAPI(
     title="Laplace API",
@@ -104,15 +135,22 @@ async def chat(request: ChatRequest):
     top_results = []
     
     for s in servants[:max_context_size]:
+        raw_np_card = s.get("npCard")
+        raw_np_target = s.get("npTarget")
+        raw_class_name = s.get("className")
+        raw_effects = s.get("skillEffects") or []
+        
+        translated_effects = [get_effect_translation(e) for e in raw_effects]
+        
         top_results.append({
             "name": s.get("name"),
             "aliasCN": s.get("aliasCN"),
-            "className": s.get("className"),
+            "className": CLASS_MAP.get(str(raw_class_name).lower(), raw_class_name),
             "rarity": s.get("rarity"),
             "totalSelfCharge": s.get("totalSelfCharge"),
-            "npCard": s.get("npCard"),
-            "npTarget": s.get("npTarget"),
-            "skillEffects": s.get("skillEffects")
+            "npCard": NP_CARD_MAP.get(str(raw_np_card).lower(), raw_np_card),
+            "npTarget": NP_TARGET_MAP.get(str(raw_np_target).lower(), raw_np_target),
+            "skillEffects": translated_effects
         })
         
     context_data = {

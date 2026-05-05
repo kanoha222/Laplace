@@ -183,11 +183,6 @@ def get_generation_prompt(user_query: str, context_json: str) -> str:
 3. **绝不瞎编**：你的回答必须完全基于【检索结果上下文】中提供的数据。不要编造名单。
 4. **简洁明快**：保持对话简短，不需要列出所有从者的每一个属性，只需要回答用户关心的问题即可。
 
-## 术语翻译参考
-如果上下文数据中包含以下字段，请按此翻译：
-- `npCard`: "buster" = 红卡, "arts" = 蓝卡, "quick" = 绿卡
-- `npTarget`: "all" = 全体 (光炮), "one" = 单体, "support" = 辅助
-
 ## 检索结果上下文
 ```json
 {context_json}
