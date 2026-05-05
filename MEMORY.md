@@ -26,6 +26,16 @@
 - **决策**: LLM 只做意图解析和结果格式化，数据查询由中间层 Query Executor 执行
 - **理由**: 分离关注点，LLM 输出的结构化 JSON 指令可预测、可测试，避免 LLM 直接操作数据带来的不可靠性
 
+### ADR-004: Schema Mirror — 知识提取而非代码复制
+- **日期**: 2026-05-05
+- **状态**: 已采纳
+- **背景**: Chaldea 用 Dart 构建了 FGO 最完整的数据类型系统（165+ FuncType、200+ BuffType、40+ SkillEffect 效果分类），需要决定如何利用
+- **决策**: 不直接翻译 Dart 代码为 Python，而是提取 Chaldea 的「领域知识」（效果分类体系、枚举映射、数据路径约定）生成 JSON 知识库，注入 LLM System Prompt
+- **理由**:
+  1. Chaldea Dart 模型高度耦合 Flutter UI（路由、翻译、渲染），直接翻译代价高
+  2. 知识提取方式维护成本低，Chaldea 更新时只需重新提取枚举
+  3. LLM 具备知识后可自动处理新的查询类型，不需要每种效果都写查询逻辑
+
 ## 已知问题 & 解决方案
 
 - **macOS pip 外部管理**: `pip install` 报错 `externally-managed-environment`，需要使用 `python3 -m venv .venv` 创建虚拟环境
@@ -36,10 +46,14 @@
 | :--- | :--- | :--- |
 | 2026-05-05 | 项目初始化 | 创建 OpenClaw 风格的项目骨架 |
 | 2026-05-05 | Demo v1 完成 | 30% NP 自充筛选器 (Python + Web) |
-| 2026-05-05 | 产品升级 | 从静态 Demo 进化为 AI Native 对话式产品 |
+| 2026-05-05 | AI Native v1 | 对话式查询上线（FastAPI + LLM 意图解析 + 从者卡片） |
+| 2026-05-05 | 架构升级 | 确立 Schema Mirror 策略，目标对标 Chaldea 全数据查询 |
 
 ## 技术备忘
 
 - **LLM 意图解析链路**: 用户输入 → LLM 解析为 JSON 指令 → Query Executor 执行 → LLM 格式化结果 → 返回对话框
 - **数据精度**: FGO NP 值以 1/10000 为单位存储，`Value=3000` 表示 30%
 - **Atlas Academy 批量端点**: `https://api.atlasacademy.io/export/JP/nice_servant_lang_en.json`
+- **Schema Mirror 知识源**: Chaldea `effect.dart` (SkillEffect 40+分类)、`func.dart` (FuncType 165+)、`buff.dart` (BuffType 200+)、`mappings.dart` (多语言映射)
+- **Chaldea 关键数据路径**: `servant.skills[] → skill.functions[] → function.svals[9].Value` (Lv.10数值)
+- **效果分类体系**: 攻击(19种) / 防御(11种) / 异常(14种) / 辅助(6种) = 40+ 子分类
