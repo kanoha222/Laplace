@@ -1,0 +1,991 @@
+{
+  "enumName": "BuffType",
+  "source": "buff.dart",
+  "count": 246,
+  "values": [
+    {
+      "name": "unknown",
+      "value": -2
+    },
+    {
+      "name": "invalid",
+      "value": -1
+    },
+    {
+      "name": "none",
+      "value": 0
+    },
+    {
+      "name": "upCommandatk",
+      "value": 1
+    },
+    {
+      "name": "upStarweight",
+      "value": 2
+    },
+    {
+      "name": "upCriticalpoint",
+      "value": 3
+    },
+    {
+      "name": "downCriticalpoint",
+      "value": 4
+    },
+    {
+      "name": "regainNp",
+      "value": 5
+    },
+    {
+      "name": "regainStar",
+      "value": 6
+    },
+    {
+      "name": "regainHp",
+      "value": 7
+    },
+    {
+      "name": "reduceHp",
+      "value": 8
+    },
+    {
+      "name": "upAtk",
+      "value": 9
+    },
+    {
+      "name": "downAtk",
+      "value": 10
+    },
+    {
+      "name": "upDamage",
+      "value": 11
+    },
+    {
+      "name": "downDamage",
+      "value": 12
+    },
+    {
+      "name": "addDamage",
+      "value": 13
+    },
+    {
+      "name": "subDamage",
+      "value": 14
+    },
+    {
+      "name": "upNpdamage",
+      "value": 15
+    },
+    {
+      "name": "downNpdamage",
+      "value": 16
+    },
+    {
+      "name": "upDropnp",
+      "value": 17
+    },
+    {
+      "name": "upCriticaldamage",
+      "value": 18
+    },
+    {
+      "name": "downCriticaldamage",
+      "value": 19
+    },
+    {
+      "name": "upSelfdamage",
+      "value": 20
+    },
+    {
+      "name": "upDefenceDamage",
+      "value": 214
+    },
+    {
+      "name": "downSelfdamage",
+      "value": 21
+    },
+    {
+      "name": "downDefenceDamage",
+      "value": 215
+    },
+    {
+      "name": "addSelfdamage",
+      "value": 22
+    },
+    {
+      "name": "subSelfdamage",
+      "value": 23
+    },
+    {
+      "name": "avoidance",
+      "value": 24
+    },
+    {
+      "name": "breakAvoidance",
+      "value": 25
+    },
+    {
+      "name": "invincible",
+      "value": 26
+    },
+    {
+      "name": "upGrantstate",
+      "value": 27
+    },
+    {
+      "name": "downGrantstate",
+      "value": 28
+    },
+    {
+      "name": "upTolerance",
+      "value": 29
+    },
+    {
+      "name": "downTolerance",
+      "value": 30
+    },
+    {
+      "name": "avoidState",
+      "value": 31
+    },
+    {
+      "name": "donotAct",
+      "value": 32
+    },
+    {
+      "name": "donotSkill",
+      "value": 33
+    },
+    {
+      "name": "donotNoble",
+      "value": 34
+    },
+    {
+      "name": "donotRecovery",
+      "value": 35
+    },
+    {
+      "name": "disableGender",
+      "value": 36
+    },
+    {
+      "name": "guts",
+      "value": 37
+    },
+    {
+      "name": "upHate",
+      "value": 38
+    },
+    {
+      "name": "addIndividuality",
+      "value": 40
+    },
+    {
+      "name": "subIndividuality",
+      "value": 41
+    },
+    {
+      "name": "upDefence",
+      "value": 42
+    },
+    {
+      "name": "downDefence",
+      "value": 43
+    },
+    {
+      "name": "upCommandstar",
+      "value": 50
+    },
+    {
+      "name": "upCommandnp",
+      "value": 51
+    },
+    {
+      "name": "upCommandall",
+      "value": 52
+    },
+    {
+      "name": "downCommandall",
+      "value": 60
+    },
+    {
+      "name": "downStarweight",
+      "value": 61
+    },
+    {
+      "name": "reduceNp",
+      "value": 62
+    },
+    {
+      "name": "downDropnp",
+      "value": 63
+    },
+    {
+      "name": "upGainHp",
+      "value": 64
+    },
+    {
+      "name": "downGainHp",
+      "value": 65
+    },
+    {
+      "name": "downCommandatk",
+      "value": 66
+    },
+    {
+      "name": "downCommanstar",
+      "value": 67
+    },
+    {
+      "name": "downCommandstar",
+      "value": 224
+    },
+    {
+      "name": "downCommandnpLegacy",
+      "value": 68
+    },
+    {
+      "name": "downCommandnp",
+      "value": 221
+    },
+    {
+      "name": "upCriticalrate",
+      "value": 70
+    },
+    {
+      "name": "downCriticalrate",
+      "value": 71
+    },
+    {
+      "name": "pierceInvincible",
+      "value": 72
+    },
+    {
+      "name": "avoidInstantdeath",
+      "value": 73
+    },
+    {
+      "name": "upResistInstantdeath",
+      "value": 74
+    },
+    {
+      "name": "upNonresistInstantdeath",
+      "value": 75
+    },
+    {
+      "name": "delayFunction",
+      "value": 76
+    },
+    {
+      "name": "regainNpUsedNoble",
+      "value": 77
+    },
+    {
+      "name": "deadFunction",
+      "value": 78
+    },
+    {
+      "name": "upMaxhp",
+      "value": 79
+    },
+    {
+      "name": "downMaxhp",
+      "value": 80
+    },
+    {
+      "name": "addMaxhp",
+      "value": 81
+    },
+    {
+      "name": "subMaxhp",
+      "value": 82
+    },
+    {
+      "name": "battlestartFunction",
+      "value": 83
+    },
+    {
+      "name": "wavestartFunction",
+      "value": 84
+    },
+    {
+      "name": "selfturnendFunction",
+      "value": 85
+    },
+    {
+      "name": "damageFunction",
+      "value": 86
+    },
+    {
+      "name": "upGivegainHp",
+      "value": 87
+    },
+    {
+      "name": "downGivegainHp",
+      "value": 88
+    },
+    {
+      "name": "commandattackAfterFunction",
+      "value": 89
+    },
+    {
+      "name": "deadattackFunction",
+      "value": 90
+    },
+    {
+      "name": "upSpecialdefence",
+      "value": 91
+    },
+    {
+      "name": "downSpecialdefence",
+      "value": 92
+    },
+    {
+      "name": "upDamagedropnp",
+      "value": 93
+    },
+    {
+      "name": "downDamagedropnp",
+      "value": 94
+    },
+    {
+      "name": "entryFunction",
+      "value": 95
+    },
+    {
+      "name": "upChagetd",
+      "value": 96
+    },
+    {
+      "name": "reflectionFunction",
+      "value": 97
+    },
+    {
+      "name": "upGrantSubstate",
+      "value": 98
+    },
+    {
+      "name": "downGrantSubstate",
+      "value": 99
+    },
+    {
+      "name": "upToleranceSubstate",
+      "value": 100
+    },
+    {
+      "name": "downToleranceSubstate",
+      "value": 101
+    },
+    {
+      "name": "upGrantInstantdeath",
+      "value": 102
+    },
+    {
+      "name": "downGrantInstantdeath",
+      "value": 103
+    },
+    {
+      "name": "gutsRatio",
+      "value": 104
+    },
+    {
+      "name": "upDefencecommandall",
+      "value": 105
+    },
+    {
+      "name": "downDefencecommandall",
+      "value": 106
+    },
+    {
+      "name": "overwriteBattleclass",
+      "value": 107
+    },
+    {
+      "name": "overwriteClassrelatioAtk",
+      "value": 108
+    },
+    {
+      "name": "overwriteClassrelatioDef",
+      "value": 109
+    },
+    {
+      "name": "upDamageIndividuality",
+      "value": 110
+    },
+    {
+      "name": "downDamageIndividuality",
+      "value": 111
+    },
+    {
+      "name": "upDamageIndividualityActiveonly",
+      "value": 112
+    },
+    {
+      "name": "downDamageIndividualityActiveonly",
+      "value": 113
+    },
+    {
+      "name": "upNpturnval",
+      "value": 114
+    },
+    {
+      "name": "downNpturnval",
+      "value": 115
+    },
+    {
+      "name": "multiattack",
+      "value": 116
+    },
+    {
+      "name": "upGiveNp",
+      "value": 117
+    },
+    {
+      "name": "downGiveNp",
+      "value": 118
+    },
+    {
+      "name": "upResistanceDelayNpturn",
+      "value": 119
+    },
+    {
+      "name": "downResistanceDelayNpturn",
+      "value": 120
+    },
+    {
+      "name": "pierceDefence",
+      "value": 121
+    },
+    {
+      "name": "upGutsHp",
+      "value": 122
+    },
+    {
+      "name": "downGutsHp",
+      "value": 123
+    },
+    {
+      "name": "upFuncgainNp",
+      "value": 124
+    },
+    {
+      "name": "downFuncgainNp",
+      "value": 125
+    },
+    {
+      "name": "upFuncHpReduce",
+      "value": 126
+    },
+    {
+      "name": "downFuncHpReduce",
+      "value": 127
+    },
+    {
+      "name": "upDefenceCommanddamage",
+      "value": 128
+    },
+    {
+      "name": "downDefenceCommanddamage",
+      "value": 129
+    },
+    {
+      "name": "npattackPrevBuff",
+      "value": 130
+    },
+    {
+      "name": "fixCommandcard",
+      "value": 131
+    },
+    {
+      "name": "donotGainnp",
+      "value": 132
+    },
+    {
+      "name": "fieldIndividuality",
+      "value": 133
+    },
+    {
+      "name": "donotActCommandtype",
+      "value": 134
+    },
+    {
+      "name": "upDamageEventPoint",
+      "value": 135
+    },
+    {
+      "name": "upDamageSpecial",
+      "value": 136
+    },
+    {
+      "name": "attackAfterFunction",
+      "value": 137
+    },
+    {
+      "name": "commandcodeattackBeforeFunction",
+      "value": 138
+    },
+    {
+      "name": "donotNobleCondMismatch",
+      "value": 139
+    },
+    {
+      "name": "donotSelectCommandcard",
+      "value": 140
+    },
+    {
+      "name": "donotReplace",
+      "value": 141
+    },
+    {
+      "name": "shortenUserEquipSkill",
+      "value": 142
+    },
+    {
+      "name": "tdTypeChange",
+      "value": 143
+    },
+    {
+      "name": "overwriteClassRelation",
+      "value": 144
+    },
+    {
+      "name": "tdTypeChangeArts",
+      "value": 145
+    },
+    {
+      "name": "tdTypeChangeBuster",
+      "value": 146
+    },
+    {
+      "name": "tdTypeChangeQuick",
+      "value": 147
+    },
+    {
+      "name": "commandattackBeforeFunction",
+      "value": 148
+    },
+    {
+      "name": "gutsFunction",
+      "value": 149
+    },
+    {
+      "name": "upCriticalRateDamageTaken",
+      "value": 150
+    },
+    {
+      "name": "downCriticalRateDamageTaken",
+      "value": 151
+    },
+    {
+      "name": "upCriticalStarDamageTaken",
+      "value": 152
+    },
+    {
+      "name": "downCriticalStarDamageTaken",
+      "value": 153
+    },
+    {
+      "name": "skillRankUp",
+      "value": 154
+    },
+    {
+      "name": "avoidanceIndividuality",
+      "value": 155
+    },
+    {
+      "name": "changeCommandCardType",
+      "value": 156
+    },
+    {
+      "name": "specialInvincible",
+      "value": 157
+    },
+    {
+      "name": "preventDeathByDamage",
+      "value": 158
+    },
+    {
+      "name": "commandcodeattackAfterFunction",
+      "value": 159
+    },
+    {
+      "name": "attackBeforeFunction",
+      "value": 160
+    },
+    {
+      "name": "donotSkillSelect",
+      "value": 161
+    },
+    {
+      "name": "buffRate",
+      "value": 162
+    },
+    {
+      "name": "invisibleBattleChara",
+      "value": 163
+    },
+    {
+      "name": "counterFunction",
+      "value": 165
+    },
+    {
+      "name": "notTargetSkill",
+      "value": 166
+    },
+    {
+      "name": "hpReduceToRegain",
+      "value": 167
+    },
+    {
+      "name": "selfturnstartFunction",
+      "value": 168
+    },
+    {
+      "name": "overwriteDeadType",
+      "value": 169
+    },
+    {
+      "name": "upActionCount",
+      "value": 170
+    },
+    {
+      "name": "downActionCount",
+      "value": 171
+    },
+    {
+      "name": "shiftGuts",
+      "value": 172
+    },
+    {
+      "name": "shiftGutsRatio",
+      "value": 173
+    },
+    {
+      "name": "masterSkillValueUp",
+      "value": 174
+    },
+    {
+      "name": "buffConvert",
+      "value": 175
+    },
+    {
+      "name": "subFieldIndividuality",
+      "value": 176
+    },
+    {
+      "name": "commandcodeattackBeforeFunctionMainOnly",
+      "value": 177
+    },
+    {
+      "name": "commandcodeattackAfterFunctionMainOnly",
+      "value": 178
+    },
+    {
+      "name": "commandattackBeforeFunctionMainOnly",
+      "value": 179
+    },
+    {
+      "name": "commandattackAfterFunctionMainOnly",
+      "value": 180
+    },
+    {
+      "name": "attackBeforeFunctionMainOnly",
+      "value": 181
+    },
+    {
+      "name": "attackAfterFunctionMainOnly",
+      "value": 182
+    },
+    {
+      "name": "warBoardNotAttacked",
+      "value": 183
+    },
+    {
+      "name": "warBoardIgnoreDefeatpoint",
+      "value": 184
+    },
+    {
+      "name": "skillAfterFunction",
+      "value": 185
+    },
+    {
+      "name": "treasureDeviceAfterFunction",
+      "value": 186
+    },
+    {
+      "name": "skillAfterFunctionMainOnly",
+      "value": 187
+    },
+    {
+      "name": "treasureDeviceAfterFunctionMainOnly",
+      "value": 188
+    },
+    {
+      "name": "preventInvisibleWhenInstantDeath",
+      "value": 189
+    },
+    {
+      "name": "overwriteSubattribute",
+      "value": 190
+    },
+    {
+      "name": "avoidanceAttackDeathDamage",
+      "value": 191
+    },
+    {
+      "name": "avoidFunctionExecuteSelf",
+      "value": 192
+    },
+    {
+      "name": "pierceSubdamage",
+      "value": 193
+    },
+    {
+      "name": "continueFunction",
+      "value": 194
+    },
+    {
+      "name": "addSpecialdamage",
+      "value": 195
+    },
+    {
+      "name": "subSpecialdamage",
+      "value": 196
+    },
+    {
+      "name": "addFuncHpReduce",
+      "value": 197
+    },
+    {
+      "name": "subFuncHpReduce",
+      "value": 198
+    },
+    {
+      "name": "changeBgm",
+      "value": 199
+    },
+    {
+      "name": "confirmCommandFunction",
+      "value": 200
+    },
+    {
+      "name": "skillBeforeFunction",
+      "value": 201
+    },
+    {
+      "name": "skillTargetedBeforeFunction",
+      "value": 202
+    },
+    {
+      "name": "fieldIndividualityChangedFunction",
+      "value": 203
+    },
+    {
+      "name": "treasureDeviceBeforeFunction",
+      "value": 204
+    },
+    {
+      "name": "stepInAfterFunction",
+      "value": 205
+    },
+    {
+      "name": "shortenSkillAfterUseSkill",
+      "value": 206
+    },
+    {
+      "name": "pierceSpecialInvincible",
+      "value": 207
+    },
+    {
+      "name": "functionedFunction",
+      "value": 208
+    },
+    {
+      "name": "donotActCommandcard",
+      "value": 209
+    },
+    {
+      "name": "upNpdamageIndividualitySum",
+      "value": 210
+    },
+    {
+      "name": "comboStartFunction",
+      "value": 211
+    },
+    {
+      "name": "comboEndFunction",
+      "value": 212
+    },
+    {
+      "name": "overwriteSvtCardType",
+      "value": 213
+    },
+    {
+      "name": "upDefenceDamage",
+      "value": 214
+    },
+    {
+      "name": "upSelfdamage",
+      "value": 20
+    },
+    {
+      "name": "downDefenceDamage",
+      "value": 215
+    },
+    {
+      "name": "downSelfdamage",
+      "value": 21
+    },
+    {
+      "name": "upDefenceCriticaldamage",
+      "value": 216
+    },
+    {
+      "name": "downDefenceCriticaldamage",
+      "value": 217
+    },
+    {
+      "name": "upDefenceNpdamage",
+      "value": 218
+    },
+    {
+      "name": "downDefenceNpdamage",
+      "value": 219
+    },
+    {
+      "name": "upDefenceCommandnp",
+      "value": 220
+    },
+    {
+      "name": "downCommandnp",
+      "value": 221
+    },
+    {
+      "name": "downCommandnp",
+      "value": 68
+    },
+    {
+      "name": "downDefenceCommandnp",
+      "value": 222
+    },
+    {
+      "name": "upDefenceCommandstar",
+      "value": 223
+    },
+    {
+      "name": "downCommandstar",
+      "value": 224
+    },
+    {
+      "name": "downCommanstar",
+      "value": 67
+    },
+    {
+      "name": "downDefenceCommandstar",
+      "value": 225
+    },
+    {
+      "name": "wavestartAnimationBeforeFunction",
+      "value": 226
+    },
+    {
+      "name": "subFixedSelfdamage",
+      "value": 227
+    },
+    {
+      "name": "overwriteFixedDefenceDamage",
+      "value": 228
+    },
+    {
+      "name": "extendActionCount",
+      "value": 229
+    },
+    {
+      "name": "gutsBeforeFunction",
+      "value": 230
+    },
+    {
+      "name": "overwriteBuffUseRate",
+      "value": 231
+    },
+    {
+      "name": "upBuffUseRate",
+      "value": 232
+    },
+    {
+      "name": "downBuffUseRate",
+      "value": 233
+    },
+    {
+      "name": "reactiveDamageGainHp",
+      "value": 234
+    },
+    {
+      "name": "upHateToGrantedOpponent",
+      "value": 235
+    },
+    {
+      "name": "upBaseHp",
+      "value": 236
+    },
+    {
+      "name": "addBaseHp",
+      "value": 237
+    },
+    {
+      "name": "substituteInstantDeath",
+      "value": 238
+    },
+    {
+      "name": "substituteAddState",
+      "value": 239
+    },
+    {
+      "name": "otherTreasureDevicePreBeforeFunction",
+      "value": 240
+    },
+    {
+      "name": "attackPhaseStartFunction",
+      "value": 241
+    },
+    {
+      "name": "treasureDevicePostAfterFunction",
+      "value": 242
+    },
+    {
+      "name": "multiDeadFunction",
+      "value": 243
+    },
+    {
+      "name": "multiGutsFunction",
+      "value": 244
+    },
+    {
+      "name": "multiGutsBeforeFunction",
+      "value": 245
+    },
+    {
+      "name": "limitMaxNp",
+      "value": 246
+    },
+    {
+      "name": "limitMinNp",
+      "value": 247
+    },
+    {
+      "name": "toFieldChangeField",
+      "value": 10001
+    },
+    {
+      "name": "toFieldAvoidBuff",
+      "value": 10002
+    },
+    {
+      "name": "toFieldSubIndividualityField",
+      "value": 10003
+    },
+    {
+      "name": "classboardCommandSpellAfterFunction",
+      "value": 200001
+    }
+  ]
+}
